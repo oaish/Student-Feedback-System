@@ -1,0 +1,365 @@
+{#<?php#}
+{#include("header.php");#}
+{#include("sidebar.php");#}
+{#if(!isset($_SESSION['date']))#}
+{#{#}
+{#	$_SESSION['feedbacktopicid'] = $_GET['feedbacktopicid'];#}
+{#	$_SESSION['date'] = date("Y-m-d H:i:s");#}
+{#	$sql_feedbackquestion_result ="INSERT INTO feedbackquestion_result (feedbacktopicid,studentid,date,feedbackquestionid,selectedanswer) SELECT '$_GET[feedbacktopicid]', '$_SESSION[studentid]', '$_SESSION[date]', feedbackquestionid, '' FROM feedbackquestion WHERE feedbacktopicid='$_GET[feedbacktopicid]'";#}
+{#	$qsl = mysqli_query($con,$sql_feedbackquestion_result);#}
+{#	echo "<script>window.location='feedbackpanel.php?feedbacktopicid=$_GET[feedbacktopicid]';</script>";#}
+{#}#}
+{#if(isset($_SESSION['feedbacktopicid']))#}
+{#{#}
+{#	$sqledit = "SELECT * FROM feedbacktopic where feedbacktopicid='$_SESSION[feedbacktopicid]'";#}
+{#	$qsqledit = mysqli_query($con,$sqledit);#}
+{#	rs = mysqli_fetch_array($qsqledit);#}
+{#	//#######}
+{#	$sqlstudent = "SELECT * FROM student WHERE studentid='rs[studentid]'";#}
+{#	$qsqlstudent = mysqli_query($con,$sqlstudent);#}
+{#	$rsstudent = mysqli_fetch_array($qsqlstudent);#}
+{#	//#######}
+{#	//#######}
+{#	$sqladmin = "SELECT * FROM admin WHERE adminid='rs[adminid]'";#}
+{#	$qsqladmin = mysqli_query($con,$sqladmin);#}
+{#	$rsadmin = mysqli_fetch_array($qsqladmin);#}
+{#	//#######}
+{#}#}
+{#?>#}
+{% extends "_student_layout.html" %}
+
+{% block content %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <br>
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation2()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Feedback Panel </h3>
+                    </div>
+                    <div class="card-body">
+
+                        <table id="tblquestionviewer" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <center>
+                                        {{ rs['feedback_topic'] }}
+                                    </center>
+                                </th>
+                            </tr>
+                            <tr>
+
+                                <th></th>
+                                <th>
+                                    <center>
+                                        Number of Questions :
+                                        {{ fbq_answered + fbq_unanswered }}
+                                        |
+                                        Answered Questions :
+                                        <span id="idansweredquestions">
+                                            {{ fbq_answered }}
+                                        </span>
+                                        |
+                                        Unanswered Questions :
+                                        <span id="idunansweredquestions">
+                                            {{ fbq_unanswered }}
+                                        </span>
+                                    </center>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for f in fbq_rez %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <input type="hidden" name="edfeedbackquestionid" id="edfeedbackquestionid"
+                                               value="{{ f['feedbackquestion_resultid'] }}">
+
+                                        <table style='width: 100%;'>
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <b>Question No. {{ loop.index }} :- </b><br><b
+                                                        style="color: #005baa;">{{ f['question'] }}</b>
+                                                </td>
+                                            </tr>
+                                            {% if f['question_type'] == 'Radio Button' %}
+                                                {% for i in range(1,11) %}
+                                                    {% if f['option' ~ i] != "" %}
+                                                        <tr>
+                                                            <td>
+                                                                <b style='color: #9b2928;'>Option {{ i }}:</b>
+                                                                <input type="radio"
+                                                                       name="option
+
+
+
+                                                                               {{ f['feedbackquestion_resultid'] }}{{ i }}"
+                                                                       required
+                                                                       id="option
+
+
+
+                                                                               {{ f['feedbackquestion_resultid'] }}{{ i }}"
+                                                                       value="{{ f['option' ~ i] }}"
+                                                                       style="display: inline-block; border: 1px solid #000;border-radius: 50%;margin: 0 0.5em;width: 30px;height: 15px;"
+                                                                       onclick="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')"
+                                                                       onchange="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')">
+                                                                <label for="option{ f['feedbackquestion_resultid'] }}{{ i }}">{{ f['option' ~ i] }}</label>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+
+                                            {% if f['question_type'] == 'Check Box' %}
+                                                {% for i in range(1,11) %}
+                                                    {% if f['option' ~ i] != "" %}
+                                                        <tr>
+                                                            <td>
+                                                                <b style='color: #9b2928;'>Option {{ i }}:</b>
+                                                                <input type="checkbox"
+                                                                       name="option
+
+
+
+
+
+
+
+                                                                               {{ f['feedbackquestion_resultid'] }}{{ i }}"
+                                                                       required
+                                                                       id="option
+
+
+
+
+
+
+
+                                                                               {{ f['feedbackquestion_resultid'] }}{{ i }}"
+                                                                       value="{{ f['option' ~ i] }}"
+                                                                       style="display: inline-block; border: 1px solid #000;border-radius: 50%;margin: 0 0.5em;width: 30px;height: 15px;"
+                                                                       onclick="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')"
+                                                                       onchange="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')">
+                                                                <label for="option
+
+
+
+
+
+
+
+                                                                        {{ f['feedbackquestion_resultid'] }}{{ i }}">{{ f['option' ~ i] }}</label>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+
+                                            {% if f['question_type'] == 'Text Box' %}
+                                                <tr>
+                                                    <td>
+                                                        <b style='color: #9b2928;'
+                                                           for="option{{ f['feedbackquestion_resultid'] }}10">
+                                                            Kindly enter your Answer here
+                                                        </b>
+                                                        <textarea
+                                                                class="form-control"
+                                                                name="option{{ f['feedbackquestion_resultid'] }}"
+                                                                id="option{{ f['feedbackquestion_resultid'] }}10"
+                                                                required
+                                                                onclick="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')"
+                                                                onchange="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')"></textarea>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+
+        <section class="content">
+            <!-- Default box -->
+            <div class="card">
+                <div class="card-body">
+                    <center><input type="button" name="submit" id="submit" value="Click Here to End"
+                                   class="btn btn-info"
+                                   onclick="confirmtocomplete('{{ fbt }}', '{{ sid }}')"/>
+                    </center>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            </form>
+        </section>
+        <?php
+}
+?>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div id="idansstatus">
+        <input type="hidden" name="answereedq" id="answereedq" value="{{ fbq_answered }}">
+        <input type="hidden" name="unanswereedq" id="unanswereedq" value="{{ fbq_unanswered }}">
+    </div>
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+{% endblock %}
+
+{% block plugins %}
+    <!-- jQuery -->
+    <script src="/static/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="/static/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="/static/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="/static/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="/static/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="/static/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="/static/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="/static/plugins/moment/moment.min.js"></script>
+    <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="/static/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="/static/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="/static/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/static/js/adminlte.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="/static/js/pages/dashboard.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/static/js/demo.js"></script>
+    <script src="/static/js/pages/dashboard3.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block styles %}
+    {% if rs['feedback_disptype'] == "Pagination Viewer" %}
+        <script>
+            $(document).ready(function () {
+                $('#tblquestionviewer').DataTable({
+                    "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ],
+                    "aaSorting": [[0, 'asc']],
+                    "pageLength": 1,
+                    "bPaginate": true,
+                    "bLengthChange": false,
+                    "bFilter": false,
+                    "bInfo": false,
+                    "bAutoWidth": false,
+                });
+            });
+        </script>
+    {% else %}
+        <script>
+            $(document).ready(function () {
+                $('#tblquestionviewer').DataTable({
+                    "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ],
+                    "aaSorting": [[0, 'asc']],
+                    "pageLength": 50,
+                    "bPaginate": true,
+                    "bLengthChange": false,
+                    "bFilter": false,
+                    "bInfo": false,
+                    "bAutoWidth": false,
+                });
+            });
+        </script>
+    {% endif %}
+    <script>
+        async function updanswer(feedbackquestion_resultid, answer, question_type) {
+            var answers = "";
+
+            if (question_type === "Radio Button") {
+                answers = answer;
+            }
+
+            if (question_type === "Check Box") {
+                $("input[name='option" + feedbackquestion_resultid + "']:checked").each(function () {
+                    answers = answers + " " + this.value + ",";
+                });
+                answers = answers.replace(/.$/, ".");
+            }
+
+            if (question_type === "Text Box") {
+                answers = answer;
+            }
+
+            console.log(feedbackquestion_resultid)
+            try {
+                const response = await fetch(`/api/fbq/answer?feedbackquestion_resultid=${feedbackquestion_resultid}&answer=${answers}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Update the elements with the response and values
+                document.getElementById("idansstatus").innerHTML = data;
+                document.getElementById("idansweredquestions").innerHTML = data.fbq_answered;
+                document.getElementById("idunansweredquestions").innerHTML = data.fbq_unanswered;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+
+        function confirmtocomplete(feedbacktopicid, studentid) {
+            if (document.getElementById("unanswereedq").value === 0) {
+                if (confirm("Are you sure?") === true) {
+                    window.location = "/student/feedback/result?feedbacktopicid=" + feedbacktopicid + "&studentid=" + studentid;
+                }
+            }
+            if (document.getElementById("unanswereedq").value !== 0) {
+                if (confirm("All Questions not answered yet.. Are you sure want to close feedbackquestion panel?") === true) {
+                    window.location = "/student/feedback/result?feedbacktopicid=" + feedbacktopicid + "&studentid=" + studentid;
+                }
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,316 @@
+{#if(isset($_GET['feedbacktopicid']))#}
+{#{#}
+{#	$sqledit = "SELECT * FROM feedbacktopic where feedbacktopicid='$_GET[feedbacktopicid]'";#}
+{#	$qsqledit = mysqli_query($con,$sqledit);#}
+{#	$rsedit = mysqli_fetch_array($qsqledit);#}
+{#	//######		#}
+{#	$sqlstudent = "SELECT * FROM student WHERE studentid='$_GET[studentid]'";#}
+{#	$qsqlstudent = mysqli_query($con,$sqlstudent);#}
+{#	rs = mysqli_fetch_array($qsqlstudent);#}
+{#	//#######}
+{#}#}
+
+{% extends "_student_layout.html" %}
+
+{% block styles %}
+    <style>
+        .align {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .print-only {
+            display: none;
+
+        }
+
+        @media print {
+            .print-only {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            font-style: italic;
+            color: #999;
+        }
+
+        .answercomment {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: white;
+            white-space: nowrap;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <br>
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="align">
+                    <img class="print-only" src="/static/img/Somaiya1.png" alt="Logo"
+                         style="width: 100%; max-width: 500px;">
+                    <img class="print-only" src="/static/img/Trust.png" alt="Logo"
+                         style="width: 100%; max-width: 120px;">
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><?php $sidemenu; ?> Student Detail</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th style="width: 250px;">Student Name:</th>
+                                        <td>{{ stud['studentname'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Roll no. - :</th>
+                                        <td>{{ stud['rollno'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Class:</th>
+                                        <td>{{ course['course_title'] }}({{ stud['section'] }})
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Feedback Detail</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+
+                                    <tr>
+                                        <th style="width: 250px;">FeedBack Topic:</th>
+                                        <td>{{ rs['feedback_topic'] }}</td>
+                                    </tr>
+                                    {% if rs['course_id'] != 0 %}
+                                        <tr>
+                                            <th>Course:</th>
+                                            <td>{{ course['course_title'] }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if rs['faculty_id'] != 0 %}
+                                        <tr>
+                                            <th>Guide:</th>
+                                            <td>$rsfaculty['faculty_name']</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th>FeedBack Detail:</th>
+                                        <td>{{ rs['feedbacktopic_detail'] }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+        <!-- /.content -->
+
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation2()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">View FeedBack Question and Answers</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <table id="tblquestionviewer" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="height: 0px;">
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for f in fbq_rez %}
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="edtestseriesid" id="edtestseriesid" value="{{ f[0] }}">
+                                        <table style='width: 100%;'>
+                                            <tr>
+                                                <td>
+                                                    <b>Question No. {{ loop.index }}: </b>
+                                                    {{ f['question'] }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Answer:</b>
+                                                    {% if f['selectedanswer'] == "" %}
+                                                        Unanswered
+                                                    {% else %}
+                                                        {{ f['selectedanswer'] }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">FeedBack detail</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+
+                                    <tr>
+                                        <th style="width: 250px;">Total Questions:</th>
+                                        <td>{{ fbq_rez | length }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Answered Questions:</th>
+                                        <td>{{ fbq_answered }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>UnAnswered Questions:</th>
+                                        <td>{{ fbq_unanswered }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+
+
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-body">
+                        <center><input type="button" name="button" class="btn btn-info" value="Print"
+                                       onclick="window.print()"></center>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+        </section>
+
+    </div>
+    <!-- /.content-wrapper -->
+    <aside class="control-sidebar control-sidebar-dark"></aside>
+{% endblock %}
+
+{% block plugins %}
+    <!-- jQuery -->
+    <script src="/static/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="/static/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="/static/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="/static/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="/static/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="/static/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="/static/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="/static/plugins/moment/moment.min.js"></script>
+    <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="/static/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="/static/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="/static/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/static/js/adminlte.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="/static/js/pages/dashboard.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/static/js/demo.js"></script>
+    <script src="/static/js/pages/dashboard3.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#tblquestionviewer').DataTable({
+                "pageLength": 1000,
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "bAutoWidth": false,
+                "sortb": x,
+            });
+        });
+    </script>
+    <div class="page-break"></div>
+{% endblock %}

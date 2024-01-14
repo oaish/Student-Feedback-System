@@ -1,0 +1,150 @@
+{% extends "_auth-layout.html" %}
+
+{% block title %}MHSSP | Home{% endblock %}
+
+{% block styles %}
+    <style>
+        .bg {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+        }
+        
+        .card-deck .card {
+            margin-left: 45px;
+            margin-right: 20px;
+            padding: 10px;
+        }
+
+        .card-title {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .card {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #9b2928;
+            border-radius: 10px;
+            box-shadow: 5px 5px 8px gray;
+        }
+
+        .card .card-title {
+            font-size: x-large;
+            font-weight: bold;
+            color: #9b2928;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+            background-color: white;
+        }
+
+        .row a {
+            color: black;
+            text-decoration: none;
+            margin: 0.3rem;
+        }
+
+        .row a:hover {
+            color: #b7202e;
+        }
+
+        button {
+            border: 0.3px solid #000000;
+            background-color: transparent;
+        }
+
+
+        @media (min-width: 1000px) {
+            .bg {
+                padding-inline: 200px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .card-img-top {
+                height: 80px !important;
+                width: 100px !important;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-img-top {
+                height: 80px;
+                width: 90px;
+            }
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="bg">
+        <br>
+        <div class="card-deck">
+
+            <!-- Card 1 -->
+
+            <div class="card">
+                <br>
+                <h5 class="card-title">Student Login</h5>
+                <br>
+                <form action="/student/login/">
+                    <img class="card-img-top" src="/static/img/student.png" alt="Card image cap"
+                         style="height:125px; width:130px">
+                    <div class="card-body">
+                        <div class="social-auth-links text-center mb-3">
+                            <input type="submit" class="btn btn-block btn-primary" value="Login" name="btnlink">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Card 2 -->
+
+            <div class="card">
+                <br>
+                <h5 class="card-title">Admin Login</h5>
+                <br>
+                <form action="/admin/login/">
+                    <img class="card-img-top" src="/static/img/admin.png" alt="Card image cap"
+                         style="height:125px; width:130px">
+                    <div class="card-body">
+                        <div class="social-auth-links text-center mb-3">
+                            <input type="submit" class="btn btn-block btn-primary"
+                                   value=" Login " name="btnlink">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br><br>
+    </div>
+{% endblock %}

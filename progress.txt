@@ -1,0 +1,10 @@
+_auth-layout.html
+    index.html
+    studentlogin.html
+    studentregister.html
+    adminlogin.html
+
+_student-layout.html
+    studentdashboard.html
+    participatefeedback.html
+

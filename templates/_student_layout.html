@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Student Panel - Student Feedback System..</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="/static/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/static/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="/static/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/static/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="/static/plugins/summernote/summernote-bs4.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+    <style>
+        .flash {
+            animation-name: flash;
+            animation-duration: 0.2s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-play-state: running;
+        }
+
+        @keyframes flash {
+            from {
+                color: red;
+            }
+            to {
+                color: black;
+            }
+        }
+
+    </style>
+
+    {% block plugins %}
+    {% endblock %}
+
+    {% block styles %}
+    {% endblock %}
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown btn-info">
+                <a class="nav-link" id="dropdown-btn-x" data-toggle="dropdown" href="#" style="color: white;">
+                    <i class="fa fa-suitcase"></i>
+                    <b>My Account </b> &nbsp;
+                    <i class="fas fa-angle-left right" style="transform: rotate(-90deg);"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="dropdown-menu-x">
+                    <div class="dropdown-divider"></div>
+                    <a href="/student/profile" class="dropdown-item">
+                        <i class="fas fa-address-book"></i> My Profile
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/student/changepassword" class="dropdown-item">
+                        <i class="fas fa fa-unlock-alt"></i> Change Password
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/student/logout/" class="dropdown-item">
+                        <i class="fa fa-window-close"></i> Logout
+                    </a>
+                </div>
+            </li>
+            <script>
+                const dd = document.querySelector('#dropdown-btn-x')
+                const dm = document.querySelector('#dropdown-menu-x')
+                dd.onclick = (e) => {
+                    if (dm.style.display === 'none')
+                        dm.style.display = 'block'
+                    else
+                        dm.style.display = 'none'
+                }
+
+                document.onclick = e => {
+                    if (!dd.contains(e.target) || !dm.contains(e.target))
+                        dm.style.display = 'none'
+                }
+            </script>
+        </ul>
+    </nav>
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/student/dashboard/" class="brand-link">
+            <img src="/static/img/ietracker.png"
+                 alt="Income expense tracker"
+                 class="brand-image img-circle elevation-3"
+                 style="opacity: .8; object-fit: cover; width: 33px; aspect-ratio: 1">
+            <span class="brand-text font-weight-light">Feedback System</span>
+        </a>
+
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="/static/img/ietracker.png" class="img-circle elevation-2" style="opacity: .8; object-fit: cover; width: 33px; aspect-ratio: 1">
+                        </div>
+                <div class="info">
+                    <b><a href="/student/profile" class="d-block">Welcome <?php echo $rsstudent['studentname']; ?></a></b>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         <br /> with font-awesome or any other icon font library -->
+
+                    <li class="nav-item has-treeview">
+                        <a href="/student/dashboard" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Student Dashboard
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item has-treeview">
+                        <a href="/student/participate_feedback?qtype=All" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Post Feedback
+                            </p>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>
+                                Student Account
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/student/profile" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>My Profile</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/student/changepassword" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Change Password</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    {% block content %}
+    {% endblock %}
+</div>
+<!-- jQuery -->
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/js/adminlte.min.js"></script>
+{% block scripts %}
+{% endblock %}
+</body>
+</html>
