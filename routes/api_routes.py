@@ -18,8 +18,3 @@ def api_login():
         "fbq_answered": fbq_answered,
         "fbq_unanswered": fbq_unanswered
     }
-
-
-@api_routes.route('/logout/')
-def api_logout():
-    return redirect(url_for("home"))

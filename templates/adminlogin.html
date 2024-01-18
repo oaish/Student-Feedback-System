@@ -1,31 +1,3 @@
-{#<?php#}
-{#if (session_status() === PHP_SESSION_NONE) { session_start(); }#}
-{#error_reporting(0);#}
-{#date_default_timezone_set("Asia/Calcutta");#}
-{#$dttim = date("Y-m-d H:i:s");#}
-{#$dt = date("Y-m-d");#}
-{#if(isset($_SESSION['adminid']))#}
-{#{#}
-{# echo "<script>window.location='admindashboard.php';</script>";#}
-{#}#}
-{#include("database.php");#}
-{#//  #}
-{#if(isset($_POST["btnsubmit"]))#}
-{#{#}
-{#	$sql = "SELECT * FROM admin WHERE loginid='$_POST[loginid]' AND password='$_POST[loginpassword]' AND status='Active'";#}
-{#	$qsql = mysqli_query($con,$sql);#}
-{#	if(mysqli_num_rows($qsql) == 1)#}
-{#	{#}
-{#		$rs = mysqli_fetch_array($qsql);#}
-{#		$_SESSION['adminid']  = $rs['adminid'];	#}
-{#		echo "<script>window.location='admindashboard.php';</script>";#}
-{#	}#}
-{#	else#}
-{#	{#}
-{#		echo "<script>alert('Entered Login credentials not valid..');</script>";#}
-{#	}#}
-{#}#}
-{#?>#}
 {% extends "_auth-layout.html" %}
 
 {% block title %}Student Feedback - Admin Login Window{% endblock %}
@@ -441,87 +413,83 @@
 {% endblock %}
 
 {% block content %}
+    <br>
+    <div class="heading">
+        <h1 style="font-weight: bold; margin-bottom: 0px">Admin Login</h1>
+    </div>
+    <br>
 
-<!-- Student Login Window -->
-<br>
-
-<div class="heading">
-
-    <h1 style="font-weight: bold; margin-bottom: 0px">Admin Login</h1>
-</div>
-<br>
-
-<!-- Login Form -->
-
-<div class="main">
-    <div class="container">
-        <div class="forms">
-            <div class="form login">
-                <p class="heading1">Login</p>
+    <div class="main">
+        <div class="container">
+            <div class="forms">
+                <div class="form login">
+                    <p class="heading1">Login</p>
+                    <br>
+                    <form action="/admin/login/" method="post">
+                        <div class="inputs">
+                            <label for="loginid">Username</label>
+                            <input type="text" name="loginid" id="loginid" class="form-control"
+                                   placeholder="Enter your username" required="required">
+                            <i class="uil uil-envelope icon"></i>
+                        </div>
+                        <div class="inputs">
+                            <label for="loginpassword">Password</label>
+                            <input type="password" name="loginpassword" id="loginpassword" class="form-control"
+                                   placeholder="Enter your password" required="required">
+                            <i class="uil uil-lock icon"></i>
+                            <i class="uil uil-eye-slash showHidePw"></i>
+                        </div>
+                        <div class="input-field button">
+                            <input type="submit" value="Login " name="btnsubmit">
+                        </div>
+                    </form>
+                </div>
                 <br>
-                <form action="" method="post">
-                    <div class="inputs">
-                        <label for="email">Username</label>
-                        <input type="text" name="loginid" id="loginid" class="form-control"
-                               placeholder="Enter your username" required="required">
-                        <i class="uil uil-envelope icon"></i>
-                    </div>
-                    <div class="inputs">
-                        <label for="email">Password</label>
-                        <input type="password" name="loginpassword" id="loginpassword" class="form-control"
-                               placeholder="Enter your password" required="required">
-                        <i class="uil uil-lock icon"></i>
-                        <i class="uil uil-eye-slash showHidePw"></i>
-                    </div>
-                    <div class="input-field button">
-                        <input type="submit" value="Login " name="btnsubmit">
-                    </div>
-                </form>
+                <br>
             </div>
-            <br>
-            <br>
         </div>
     </div>
-</div>
-<br>
+    <br>
 {% endblock %}
 
 {% block scripts %}
-<script>
-    const container = document.querySelector(".container"),
-        pwShowHide = document.querySelectorAll(".showHidePw"),
-        pwFields = document.querySelectorAll(".password"),
-        signUp = document.querySelector(".signup-link"),
-        login = document.querySelector(".login-link");
+    {% if err %}
+        <script>alert('{{ err }}')</script>
+    {% endif %}
+    <script>
+        const container = document.querySelector(".container"),
+            pwShowHide = document.querySelectorAll(".showHidePw"),
+            pwFields = document.querySelectorAll(".password"),
+            signUp = document.querySelector(".signup-link"),
+            login = document.querySelector(".login-link");
 
-    //   js code to show/hide password and change icon
-    pwShowHide.forEach(eyeIcon => {
-        eyeIcon.addEventListener("click", () => {
-            pwFields.forEach(pwField => {
-                if (pwField.type === "password") {
-                    pwField.type = "text";
+        pwShowHide.forEach(eyeIcon => {
+            eyeIcon.addEventListener("click", () => {
+                pwFields.forEach(pwField => {
+                    if (pwField.type === "password") {
+                        pwField.type = "text";
 
-                    pwShowHide.forEach(icon => {
-                        icon.classList.replace("uil-eye-slash", "uil-eye");
-                    })
-                } else {
-                    pwField.type = "password";
+                        pwShowHide.forEach(icon => {
+                            icon.classList.replace("uil-eye-slash", "uil-eye");
+                        })
+                    } else {
+                        pwField.type = "password";
 
-                    pwShowHide.forEach(icon => {
-                        icon.classList.replace("uil-eye", "uil-eye-slash");
-                    })
-                }
+                        pwShowHide.forEach(icon => {
+                            icon.classList.replace("uil-eye", "uil-eye-slash");
+                        })
+                    }
+                })
             })
         })
-    })
 
-    // js code to appear signup and login form
-    signUp.addEventListener("click", () => {
-        container.classList.add("active");
-    });
-    login.addEventListener("click", () => {
-        container.classList.remove("active");
-    });
-</script>
+        // js code to appear signup and login form
+        signUp.addEventListener("click", () => {
+            container.classList.add("active");
+        });
+        login.addEventListener("click", () => {
+            container.classList.remove("active");
+        });
+    </script>
 {% endblock %}
 

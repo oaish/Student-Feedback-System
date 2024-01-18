@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from flask import Flask, render_template
 from flask_mysqldb import MySQL
 
@@ -34,7 +32,9 @@ def execute_static(query):
     mysql.connection.commit()
     cursor.close()
     print("RESULTS:", res)
-    return res[0][0]
+    if len(res) > 0 and len(res[0]) > 0:
+        return res[0][0]
+    return 0
 
 
 def execute_query(query):
@@ -48,6 +48,15 @@ def execute_query(query):
     mysql.connection.commit()
     cursor.close()
     return result_dict
+
+
+def get_count(query):
+    cursor = mysql.connection.cursor()
+    cursor.execute(query)
+    result_set = cursor.fetchall()
+    mysql.connection.commit()
+    cursor.close()
+    return len(result_set)
 
 
 def execute_query_one(query):

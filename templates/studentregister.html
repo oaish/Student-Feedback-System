@@ -153,7 +153,7 @@
 
         .container {
             max-width: 700px;
-            width: 500px !important;
+            width: 700px !important;
             background-color: #fff;
             padding: 25px 30px;
             border-radius: 5px;
@@ -430,7 +430,9 @@
 {% endblock %}
 
 {% block content %}
-
+    {% if err %}
+        <script>alert('{{ err }}')</script>
+    {% endif %}
     <div class="main">
         <div style="height:50px"></div>
 
@@ -444,7 +446,7 @@
 
         <!-- Registration Form -->
         <div class="main1">
-            <form action="">
+            <form action="/student/register" method="POST">
                 <div class="container">
                     <div class="title">Registration</div>
                     <br>
@@ -521,8 +523,8 @@
                                 <!-- <div class="col-md-3">Course</div> -->
                                 <select class="form-control" name="studentclass" id="studentclass" required="required">
                                     <option>Select Course</option>
-                                    {% for _ in course %}
-                                        <option value='{{ _ }}'>{{ _ }}</option>
+                                    {% for course in courses %}
+                                        <option value="{{ course['course_title'] }}">{{ course['course_description'] }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -533,8 +535,8 @@
                                 <select class="form-control" name="studentclass1" id="studentclass1"
                                         required="required">
                                     <option>Select Year</option>
-                                    {% for _ in year %}
-                                        <option value='{{ _ }}'>{{ _ }}</option>
+                                    {% for year in years %}
+                                        <option value="{{ year['years_title'] }}">{{ year['years_description'] }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -545,6 +547,9 @@
                                 <input type="text" class="form-control" name="section" id="input-section"
                                        placeholder="Enter Your Section" required="required"
                                 >
+                                <div class="col-md-4">
+                                    <span class="errmsg flash" id="errsection" style="color: red;"></span>
+                                </div>
                             </div>
                             <br>
                     </div>
@@ -569,66 +574,46 @@
 {% endblock %}
 
 {% block scripts %}
-    <script>
+     <script>
         function confirmvalidation() {
             var i = 0;
             $('.errmsg').html('');
-            if (document.getElementById("studentname").value == "") {
+            if (document.getElementById("studentname").value === "") {
                 document.getElementById("errstudentname").innerHTML = "Original Name should not be empty";
                 i = 1;
             }
-            if (document.getElementById("rollno").value == "") {
-                document.getElementById("errrollno").innerHTML = "Roll no should not be empty";
+
+            if (document.getElementById("rollno").value === "") {
+                document.getElementById("errrollno").innerHTML = "Email ID should not be empty";
                 i = 1;
             }
-            if (document.getElementById("email_id").value == "") {
-                document.getElementById("erremailid").innerHTML = "Email ID should not be empty";
-                i = 1;
-            }
+
+
             if (document.getElementById("password").value.length < 6) {
                 document.getElementById("errpassword").innerHTML = "Password should contain more than 6 characters";
                 i = 1;
             }
-            if (document.getElementById("password").value == "") {
+            if (document.getElementById("password").value === "") {
                 document.getElementById("errpassword").innerHTML = "Password code should not be empty";
                 i = 1;
             }
-            if (document.getElementById("confirmpassword").value != document.getElementById("password").value) {
+            if (document.getElementById("confirmpassword").value !== document.getElementById("password").value) {
                 document.getElementById("errconfirmpassword").innerHTML = "Password and Confirm password not matching";
                 i = 1;
             }
-            if (document.getElementById("confirmpassword").value == "") {
+            if (document.getElementById("confirmpassword").value === "") {
                 document.getElementById("errconfirmpassword").innerHTML = "Confirm Password  should not be empty";
                 i = 1;
             }
-            if (document.getElementById("dateofbirth").value == "") {
-                document.getElementById("errdateofbirth").innerHTML = "Date of Birth should not be empty";
-                i = 1;
-            }
-            if (document.getElementById("student_no").value == "") {
-                document.getElementById("errstudentno").innerHTML = "Student No should not be empty";
-                i = 1;
-            }
-            if (document.getElementById("mothers_no").value == "") {
-                document.getElementById("errmothersno").innerHTML = "Mothers no should not be empty";
-                i = 1;
-            }
-            if (document.getElementById("fathers_no").value == "") {
-                document.getElementById("errfathersno").innerHTML = "Fathers no should not be empty";
-                i = 1;
-            }
-            if (document.getElementById("section").value == "") {
+            if (document.getElementById("section").value === "") {
                 document.getElementById("errsection").innerHTML = "University Name should not be empty";
                 i = 1;
             }
-            if (document.getElementById("studentclass").value == "") {
-                document.getElementById("errsection").innerHTML = "University Name should not be empty";
+            if (document.getElementById("course_id").value === "") {
+                document.getElementById("errcourse_id").innerHTML = "Qualification should not be empty";
                 i = 1;
             }
-            if (document.getElementById("studentclass").value == "") {
-                document.getElementById("errstudentclass").innerHTML = "Qualification  should not be empty";
-                i = 1;
-            }
+
             if (i == 0) {
                 return true;
             } else {

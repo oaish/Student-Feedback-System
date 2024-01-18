@@ -163,48 +163,6 @@
             </form>
         </section>
     </div>
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-    </aside>
-{% endblock %}
-
-{% block plugins %}
-    <!-- jQuery -->
-    <script src="/static/plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="/static/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
-    <!-- Bootstrap 4 -->
-    <script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="/static/plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="/static/plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="/static/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="/static/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="/static/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="/static/plugins/moment/moment.min.js"></script>
-    <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="/static/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="/static/plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="/static/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="/static/js/adminlte.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="/static/js/pages/dashboard.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="/static/js/demo.js"></script>
-    <script src="/static/js/pages/dashboard3.js"></script>
 {% endblock %}
 
 {% block scripts %}
@@ -212,12 +170,12 @@
         function confirmvalidation() {
             var i = 0;
             $('.errmsg').html('');
-            if (document.getElementById("studentname").value == "") {
+            if (document.getElementById("studentname").value === "") {
                 document.getElementById("errstudentname").innerHTML = "Original Name should not be empty";
                 i = 1;
             }
 
-            if (document.getElementById("rollno").value == "") {
+            if (document.getElementById("rollno").value === "") {
                 document.getElementById("errrollno").innerHTML = "Email ID should not be empty";
                 i = 1;
             }
@@ -227,23 +185,23 @@
                 document.getElementById("errpassword").innerHTML = "Password should contain more than 6 characters";
                 i = 1;
             }
-            if (document.getElementById("password").value == "") {
+            if (document.getElementById("password").value === "") {
                 document.getElementById("errpassword").innerHTML = "Password code should not be empty";
                 i = 1;
             }
-            if (document.getElementById("confirmpassword").value != document.getElementById("password").value) {
+            if (document.getElementById("confirmpassword").value !== document.getElementById("password").value) {
                 document.getElementById("errconfirmpassword").innerHTML = "Password and Confirm password not matching";
                 i = 1;
             }
-            if (document.getElementById("confirmpassword").value == "") {
+            if (document.getElementById("confirmpassword").value === "") {
                 document.getElementById("errconfirmpassword").innerHTML = "Confirm Password  should not be empty";
                 i = 1;
             }
-            if (document.getElementById("section").value == "") {
+            if (document.getElementById("section").value === "") {
                 document.getElementById("errsection").innerHTML = "University Name should not be empty";
                 i = 1;
             }
-            if (document.getElementById("course_id").value == "") {
+            if (document.getElementById("course_id").value === "") {
                 document.getElementById("errcourse_id").innerHTML = "Qualification should not be empty";
                 i = 1;
             }
