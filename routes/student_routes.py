@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from flask import render_template, Blueprint, redirect, url_for, request, session
 
 student_routes = Blueprint('student_routes', __name__)
@@ -76,14 +77,19 @@ def student_register():
 
 @student_routes.route('/dashboard/')
 def student_dashboard():
-    from app import execute_static
+    from app import execute_static, execute_query, execute_query_one
     email = session['s_email']
     password = session['s_password']
-    _id = execute_static(
-        f"SELECT studentid FROM student WHERE email_id='{email}' AND password='{password}' AND status='Active'")
-    obj = {"id": _id, "fb_topic_count": execute_static("SELECT COUNT(*) FROM feedbacktopic"),
-           "fb_ans_count": execute_static(
-               f"SELECT COUNT(*) FROM feedbackquestion_result WHERE studentid='{_id}' GROUP BY date"), }
+    student = execute_query_one(
+        f"SELECT studentid, course_id FROM student WHERE email_id='{email}' AND password='{password}' AND status='Active'")
+    _id = student['studentid']
+    obj = {
+        "id": _id,
+        "fb_topic_count": execute_static(f"SELECT COUNT(*) FROM feedbacktopic WHERE course_id IN(0,{student['course_id']})"),
+        "fb_ans_count": len(execute_query(
+            f"SELECT * FROM feedbackquestion_result WHERE studentid='{_id}' GROUP BY date")),
+    }
+    print("SQL:", f"SELECT COUNT(*) FROM feedbacktopic WHERE course_id IN(0,{student['course_id']})")
     session['s_id'] = _id
     session['course_id'] = execute_static(f"SELECT course_id FROM student WHERE studentid='{_id}'")
     return render_template('studentdashboard.html', obj=obj)
@@ -91,8 +97,8 @@ def student_dashboard():
 
 @student_routes.route('/participate_feedback/')
 def student_participate_feedback():
-    # global faculty, questions, q_count, fbq_res
     from app import execute_query, execute_static
+    session['date'] = None
     sql = "SELECT * FROM feedbacktopic " \
           "WHERE feedbacktopicid!='0' AND feedbacktopic_status='Approved' " \
           f"AND (course_id='{session['course_id']}' OR course_id='0' ) ORDER BY feedbacktopicid DESC"
@@ -125,6 +131,8 @@ def feedback_result():
     stud = execute_query_one(sql)
     sql = f"SELECT * FROM course where course_id='{stud['course_id']}'"
     course = execute_query_one(sql)
+    sql = f"SELECT * FROM faculty where faculty_id='{rs['faculty_id']}'"
+    faculty = execute_query_one(sql)
     sql = f"SELECT COUNT(*) FROM feedbackquestion_result WHERE feedbacktopicid='{feedbacktopicid}' AND studentid='{studentid}' AND selectedanswer != ''"
     fbq_answered = execute_static(sql)
     sql = f"SELECT COUNT(*) FROM feedbackquestion_result WHERE feedbacktopicid='{feedbacktopicid}' AND studentid='{studentid}' AND selectedanswer = ''"
@@ -135,40 +143,42 @@ def feedback_result():
     fbq_rez = execute_query(sql)
     print(course, type(course))
     return render_template('feedbackquestion_success.html', rs=rs, stud=stud, course=course, fbq_rez=fbq_rez,
-                           fbq_answered=fbq_answered, fbq_unanswered=fbq_unanswered)
+                           fbq_answered=fbq_answered, fbq_unanswered=fbq_unanswered, faculty=faculty)
 
 
 @student_routes.route('/feedback/panel')
 def feedback_panel():
     from app import execute_update, execute_query_one, execute_query, execute_static
-    feedbacktopicid = int(request.args.get('feedbacktopicid'))
-    session['fbq_topic_id'] = feedbacktopicid
-    if "date" not in session:
-        sql = f"INSERT INTO feedbackquestion_result (feedbacktopicid,studentid,date,feedbackquestionid,selectedanswer) SELECT '$_GET[feedbacktopicid]', '$_SESSION[studentid]', '$_SESSION[date]', feedbackquestionid, '' FROM feedbackquestion WHERE feedbacktopicid='$_GET[feedbacktopicid]'"
-        _ = execute_update(sql)
-        formatted_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        session['fb_id'] = feedbacktopicid
-        session['date'] = formatted_time
-        return redirect(url_for('student_routes.feedback_panel', feedbacktopicid=feedbacktopicid))
+    feedback_topic_id = int(request.args.get('feedbacktopicid'))
+    student_id = session['s_id']
+    if session.get('fbq_date') != f"{session.get('fb_topic_id')}|{session.get('date')}":
+        session['date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        session['fbq_date'] = f"{feedback_topic_id}|{session['date']}"
+        session['fb_topic_id'] = feedback_topic_id
+        sql = f"INSERT INTO feedbackquestion_result (feedbacktopicid,studentid,date,feedbackquestionid,selectedanswer) " \
+              f"SELECT '{feedback_topic_id}', '{student_id}', '{session['date']}', feedbackquestionid, '' " \
+              f"FROM feedbackquestion WHERE feedbacktopicid='{feedback_topic_id}'"
 
-    studentid = session['s_id']
-    sql = f"SELECT * FROM feedbacktopic WHERE feedbacktopicid='{feedbacktopicid}'"
+        execute_update(sql)
+        return redirect(url_for('student_routes.feedback_panel', feedbacktopicid=feedback_topic_id))
+
+    sql = f"SELECT * FROM feedbacktopic WHERE feedbacktopicid='{feedback_topic_id}'"
     rs = execute_query_one(sql)
-    sql = f"SELECT * FROM student WHERE studentid='{studentid}'"
+    sql = f"SELECT * FROM student WHERE studentid='{student_id}'"
     stud = execute_query_one(sql)
-    sql = f"SELECT COUNT(*) FROM feedbackquestion_result WHERE feedbacktopicid='{feedbacktopicid}' AND studentid='{studentid}' AND selectedanswer != ''"
+    sql = f"SELECT COUNT(*) FROM feedbackquestion_result WHERE feedbacktopicid='{feedback_topic_id}' AND date='{session['date']}' AND studentid='{student_id}' AND selectedanswer != ''"
     fbq_answered = execute_static(sql)
-    sql = f"SELECT COUNT(*) FROM feedbackquestion_result WHERE feedbacktopicid='{feedbacktopicid}' AND studentid='{studentid}' AND selectedanswer = ''"
+    sql = f"SELECT COUNT(*) FROM feedbackquestion_result WHERE feedbacktopicid='{feedback_topic_id}' AND date='{session['date']}' AND studentid='{student_id}' AND selectedanswer = ''"
     fbq_unanswered = execute_static(sql)
     sql = f"""SELECT fr.*, fq.question, fq.question_type, fq.img,
     fq.option1, fq.option2, fq.option3, fq.option4, fq.option5, fq.option6, fq.option7, fq.option8, fq.option9, fq.option10
     FROM feedbackquestion_result fr LEFT JOIN feedbackquestion fq ON fr.feedbackquestionid = fq.feedbackquestionid 
-    WHERE fr.feedbacktopicid = '{feedbacktopicid}' AND fr.studentid = '{session['s_id']}' 
+    WHERE fr.feedbacktopicid = '{feedback_topic_id}' AND fr.studentid = '{session['s_id']}' 
     ORDER BY fr.feedbackquestion_resultid"""
     fbq_rez = execute_query(sql)
-    print(fbq_rez)
+    print("FBQ REZ:", fbq_rez)
     return render_template('feedbackpanel.html', rs=rs, stud=stud, fbq_rez=fbq_rez, fbq_answered=fbq_answered,
-                           fbq_unanswered=fbq_unanswered, fbt=feedbacktopicid, sid=session['s_id'])
+                           fbq_unanswered=fbq_unanswered, fbt=feedback_topic_id, sid=session['s_id'])
 
 
 @student_routes.route('/profile', methods=['GET', 'POST'])

@@ -1,31 +1,3 @@
-{#<?php#}
-{#include("header.php");#}
-{#include("sidebar.php");#}
-{#if(!isset($_SESSION['date']))#}
-{#{#}
-{#	$_SESSION['feedbacktopicid'] = $_GET['feedbacktopicid'];#}
-{#	$_SESSION['date'] = date("Y-m-d H:i:s");#}
-{#	$sql_feedbackquestion_result ="INSERT INTO feedbackquestion_result (feedbacktopicid,studentid,date,feedbackquestionid,selectedanswer) SELECT '$_GET[feedbacktopicid]', '$_SESSION[studentid]', '$_SESSION[date]', feedbackquestionid, '' FROM feedbackquestion WHERE feedbacktopicid='$_GET[feedbacktopicid]'";#}
-{#	$qsl = mysqli_query($con,$sql_feedbackquestion_result);#}
-{#	echo "<script>window.location='feedbackpanel.php?feedbacktopicid=$_GET[feedbacktopicid]';</script>";#}
-{#}#}
-{#if(isset($_SESSION['feedbacktopicid']))#}
-{#{#}
-{#	$sqledit = "SELECT * FROM feedbacktopic where feedbacktopicid='$_SESSION[feedbacktopicid]'";#}
-{#	$qsqledit = mysqli_query($con,$sqledit);#}
-{#	rs = mysqli_fetch_array($qsqledit);#}
-{#	//#######}
-{#	$sqlstudent = "SELECT * FROM student WHERE studentid='rs[studentid]'";#}
-{#	$qsqlstudent = mysqli_query($con,$sqlstudent);#}
-{#	$rsstudent = mysqli_fetch_array($qsqlstudent);#}
-{#	//#######}
-{#	//#######}
-{#	$sqladmin = "SELECT * FROM admin WHERE adminid='rs[adminid]'";#}
-{#	$qsqladmin = mysqli_query($con,$sqladmin);#}
-{#	$rsadmin = mysqli_fetch_array($qsqladmin);#}
-{#	//#######}
-{#}#}
-{#?>#}
 {% extends "_student_layout.html" %}
 
 {% block content %}
@@ -96,23 +68,19 @@
                                                         <tr>
                                                             <td>
                                                                 <b style='color: #9b2928;'>Option {{ i }}:</b>
-                                                                <input type="radio"
-                                                                       name="option
+                                                                <label>
+                                                                    <input type="radio"
+                                                                           name="option{{ f['feedbackquestion_resultid'] }}"
+                                                                           required
+                                                                           id="option
 
-
-
-                                                                               {{ f['feedbackquestion_resultid'] }}{{ i }}"
-                                                                       required
-                                                                       id="option
-
-
-
-                                                                               {{ f['feedbackquestion_resultid'] }}{{ i }}"
-                                                                       value="{{ f['option' ~ i] }}"
-                                                                       style="display: inline-block; border: 1px solid #000;border-radius: 50%;margin: 0 0.5em;width: 30px;height: 15px;"
-                                                                       onclick="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')"
-                                                                       onchange="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')">
-                                                                <label for="option{ f['feedbackquestion_resultid'] }}{{ i }}">{{ f['option' ~ i] }}</label>
+                                                                                   {{ f['feedbackquestion_resultid'] }}{{ i }}"
+                                                                           value="{{ f['option' ~ i] }}"
+                                                                           style="display: inline-block; border: 1px solid #000;border-radius: 50%;margin: 0 0.5em;width: 30px;height: 15px;"
+                                                                           onclick="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')"
+                                                                           onchange="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')">
+                                                                    {{ f['option' ~ i] }}
+                                                                </label>
                                                             </td>
                                                         </tr>
                                                     {% endif %}
@@ -125,39 +93,23 @@
                                                         <tr>
                                                             <td>
                                                                 <b style='color: #9b2928;'>Option {{ i }}:</b>
-                                                                <input type="checkbox"
-                                                                       name="option
 
-
-
-
-
-
-
-                                                                               {{ f['feedbackquestion_resultid'] }}{{ i }}"
-                                                                       required
-                                                                       id="option
-
-
-
-
-
-
-
-                                                                               {{ f['feedbackquestion_resultid'] }}{{ i }}"
-                                                                       value="{{ f['option' ~ i] }}"
-                                                                       style="display: inline-block; border: 1px solid #000;border-radius: 50%;margin: 0 0.5em;width: 30px;height: 15px;"
-                                                                       onclick="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')"
-                                                                       onchange="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')">
                                                                 <label for="option
+                                                                        {{ f['feedbackquestion_resultid'] }}{{ i }}">
+                                                                    <input type="checkbox"
+                                                                           name="option
 
+                                                                                   {{ f['feedbackquestion_resultid'] }}{{ i }}"
+                                                                           required
+                                                                           id="option
 
-
-
-
-
-
-                                                                        {{ f['feedbackquestion_resultid'] }}{{ i }}">{{ f['option' ~ i] }}</label>
+                                                                                   {{ f['feedbackquestion_resultid'] }}{{ i }}"
+                                                                           value="{{ f['option' ~ i] }}"
+                                                                           style="display: inline-block; border: 1px solid #000;border-radius: 50%;margin: 0 0.5em;width: 30px;height: 15px;"
+                                                                           onclick="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')"
+                                                                           onchange="updanswer('{{ f['feedbackquestion_resultid'] }}',this.value,'{{ f['question_type'] }}')">
+                                                                    {{ f['option' ~ i] }}
+                                                                </label>
                                                             </td>
                                                         </tr>
                                                     {% endif %}
@@ -209,11 +161,8 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
-            </form>
         </section>
-        <?php
-}
-?>
+
     </div>
     <!-- /.content-wrapper -->
 
@@ -221,50 +170,6 @@
         <input type="hidden" name="answereedq" id="answereedq" value="{{ fbq_answered }}">
         <input type="hidden" name="unanswereedq" id="unanswereedq" value="{{ fbq_unanswered }}">
     </div>
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-{% endblock %}
-
-{% block plugins %}
-    <!-- jQuery -->
-    <script src="/static/plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="/static/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
-    <!-- Bootstrap 4 -->
-    <script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="/static/plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="/static/plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="/static/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="/static/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="/static/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="/static/plugins/moment/moment.min.js"></script>
-    <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="/static/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="/static/plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="/static/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="/static/js/adminlte.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="/static/js/pages/dashboard.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="/static/js/demo.js"></script>
-    <script src="/static/js/pages/dashboard3.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 {% endblock %}
 
 {% block styles %}
@@ -312,6 +217,13 @@
         </script>
     {% endif %}
     <script>
+        console.clear()
+        window.addEventListener('popstate', async function (event) {
+            const res = await fetch('http://127.0.0.1:5000/api/date/reset')
+            console.log(await res.json())
+        });
+    </script>
+    <script>
         async function updanswer(feedbackquestion_resultid, answer, question_type) {
             var answers = "";
 
@@ -330,15 +242,15 @@
                 answers = answer;
             }
 
-            console.log(feedbackquestion_resultid)
+            console.clear()
             try {
-                const response = await fetch(`/api/fbq/answer?feedbackquestion_resultid=${feedbackquestion_resultid}&answer=${answers}`);
+                const response = await fetch(`http://127.0.0.1:5000/api/fbq/answer?feedbackquestion_resultid=${feedbackquestion_resultid}&answer=${answers}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
-
+                console.log("data", data)
                 // Update the elements with the response and values
                 document.getElementById("idansstatus").innerHTML = data;
                 document.getElementById("idansweredquestions").innerHTML = data.fbq_answered;
@@ -350,16 +262,17 @@
 
 
         function confirmtocomplete(feedbacktopicid, studentid) {
-            if (document.getElementById("unanswereedq").value === 0) {
-                if (confirm("Are you sure?") === true) {
-                    window.location = "/student/feedback/result?feedbacktopicid=" + feedbacktopicid + "&studentid=" + studentid;
-                }
+            let str = ""
+            if (document.getElementById("idansweredquestions").value === 0) {
+                str = "Are you sure?"
             }
-            if (document.getElementById("unanswereedq").value !== 0) {
-                if (confirm("All Questions not answered yet.. Are you sure want to close feedbackquestion panel?") === true) {
-                    window.location = "/student/feedback/result?feedbacktopicid=" + feedbacktopicid + "&studentid=" + studentid;
-                }
+            if (document.getElementById("idansweredquestions").value !== 0) {
+                str = "All Questions not answered yet.. Are you sure want to close feedbackquestion panel?"
             }
+            if (confirm(str) === true) {
+                location.replace("/student/feedback/result?feedbacktopicid=" + feedbacktopicid + "&studentid=" + studentid);
+            }
+
         }
     </script>
 {% endblock %}

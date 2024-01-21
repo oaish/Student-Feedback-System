@@ -31,7 +31,6 @@ def execute_static(query):
     res = cursor.fetchall()
     mysql.connection.commit()
     cursor.close()
-    print("RESULTS:", res)
     if len(res) > 0 and len(res[0]) > 0:
         return res[0][0]
     return 0

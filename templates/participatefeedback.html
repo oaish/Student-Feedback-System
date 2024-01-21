@@ -39,7 +39,6 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <br>
@@ -64,32 +63,27 @@
                             <tbody>
                             {% for rs in result_set %}
                                 <tr>
-                                    <td style='width: 100px;'>
-                                        <img src='/static/img/student.png' style='width: 100px;height:70px;'>
-                                    </td>
                                     <td>
                                         <b>{{ rs['feedback_topic'] }}</b>
                                         <br>{{ rs['feedbacktopic_detail'] }}
                                         {% for faculty in rs['faculty'] %}
                                             {% if rs['faculty_id'] != 0 %}
                                                 <hr>
-                                                <img src="imgfaculty/{{ faculty['faculty_img'] }}"
-                                                     style='width: 50px; height: 50px;' alt=""> &nbsp;
-                                                <b>{{ faculty['faculty_name'] }}</b>
-                                                <br> &nbsp; {{ faculty['faculty_designation'] }}
+                                                <img src="/static/img/Faculty.png"
+                                                     style='float: left;width: 50px; height: 50px;' alt="">
+                                                <b> &nbsp; Faculty: {{ faculty['faculty_name'] }}</b>
+                                                <br> &nbsp; Designation: {{ faculty['faculty_designation'] }}
                                             {% endif %}
                                         {% endfor %}
                                     </td>
-                                    <td> {{ rs['feedbacktopic_date'] }} <br>
-                                        {{ rs['feedbacktopic_date'] }}
-                                    </td>
+                                    <td> {{ rs['feedbacktopic_date'] }} </td>
                                     <td>
                                         {% set fbq_res = rs['fbq_res'] %}
                                         {% if (fbq_res | length) >=1 %}
-                                            <a href='/student/feedback/result?feedbacktopicid={{ rs['feedbacktopicid'] }}&studentid={{ s_id }}'
+                                            <a onclick="location.replace('http://127.0.0.1:5000/student/feedback/result?feedbacktopicid={{ rs['feedbacktopicid'] }}&studentid={{ s_id }}')"
                                                class='btn btn-success'>View Entries</a>
                                         {% else %}
-                                            <a href='/student/feedback/panel?feedbacktopicid={{ rs['feedbacktopicid'] }}'
+                                            <a onclick="location.replace('http://127.0.0.1:5000/student/feedback/panel?feedbacktopicid={{ rs['feedbacktopicid'] }}')"
                                                class='btn btn-primary'>Participate</a>
                                         {% endif %}
                                         <br>
@@ -109,34 +103,6 @@
         </section>
         <!-- /.content -->
     </div>
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-{% endblock %}
-
-{% block plugins %}
-    <script src="/static/plugins/jquery/jquery.min.js"></script>
-    <script src="/static/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <script>$.widget.bridge('uibutton', $.ui.button)</script>
-    <script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/plugins/chart.js/Chart.min.js"></script>
-    <script src="/static/plugins/sparklines/sparkline.js"></script>
-    <script src="/static/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="/static/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <script src="/static/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <script src="/static/plugins/moment/moment.min.js"></script>
-    <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
-    <script src="/static/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="/static/plugins/summernote/summernote-bs4.min.js"></script>
-    <script src="/static/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <script src="/static/js/adminlte.js"></script>
-    <script src="/static/js/pages/dashboard.js"></script>
-    <script src="/static/js/demo.js"></script>
-    <script src="/static/js/pages/dashboard3.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 {% endblock %}
 
 {% block scripts %}
@@ -154,7 +120,6 @@
             }
         }
     </script>
-
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -169,12 +134,11 @@
             </div>
         </div>
     </div>
-
     <script>
         function funloadtestseries(feedbacktopicid, qpaper_title) {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
+                if (this.readyState === 4 && this.status === 200) {
                     document.getElementById("iexampleModalLabel").innerHTML = qpaper_title;
                     document.getElementById("idocspaper").innerHTML = this.responseText;
                 }
