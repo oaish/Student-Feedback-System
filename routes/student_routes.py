@@ -19,6 +19,9 @@ def student_login():
         sql = f"SELECT COUNT(*) FROM student WHERE email_id='{email}' AND password='{password}' AND status='Active'"
         res = execute_static(sql)
         if res == 1:
+            sql = f"SELECT studentid FROM student WHERE email_id='{email}' AND password='{password}' AND status='Active'"
+            sid = execute_static(sql)
+            session['s_id'] = sid
             return redirect(url_for('student_routes.student_dashboard'))
         else:
             return render_template('studentlogin.html', disp=True, msg='Invalid Email or Password')
@@ -77,6 +80,8 @@ def student_register():
 
 @student_routes.route('/dashboard/')
 def student_dashboard():
+    if session.get('s_id') is None:
+        return redirect(url_for('home'))
     from app import execute_static, execute_query, execute_query_one
     email = session['s_email']
     password = session['s_password']
@@ -97,6 +102,8 @@ def student_dashboard():
 
 @student_routes.route('/participate_feedback/')
 def student_participate_feedback():
+    if session.get('s_id') is None:
+        return redirect(url_for('home'))
     from app import execute_query, execute_static
     session['date'] = None
     sql = "SELECT * FROM feedbacktopic " \
@@ -122,6 +129,8 @@ def student_participate_feedback():
 
 @student_routes.route('/feedback/result')
 def feedback_result():
+    if session.get('s_id') is None:
+        return redirect(url_for('home'))
     from app import execute_query_one, execute_query, execute_static
     feedbacktopicid = int(request.args.get('feedbacktopicid'))
     studentid = int(request.args.get('studentid'))
@@ -148,6 +157,8 @@ def feedback_result():
 
 @student_routes.route('/feedback/panel')
 def feedback_panel():
+    if session.get('s_id') is None:
+        return redirect(url_for('home'))
     from app import execute_update, execute_query_one, execute_query, execute_static
     feedback_topic_id = int(request.args.get('feedbacktopicid'))
     student_id = session['s_id']
@@ -184,6 +195,8 @@ def feedback_panel():
 @student_routes.route('/profile', methods=['GET', 'POST'])
 def student_profile():
     from app import execute_query_one, execute_update
+    if session.get('s_id') is None:
+        return redirect(url_for('home'))
     if request.method == 'POST':
         student_name = request.form['studentname']
         roll_no = request.form['rollno']
@@ -208,6 +221,8 @@ def student_profile():
 @student_routes.route('/changepassword', methods=['GET', 'POST'])
 def student_change_password():
     from app import execute_static, execute_update
+    if session.get('s_id') is None:
+        return redirect(url_for('home'))
     if request.method == 'POST':
         old = request.form['opassword']
         new = request.form['npassword']

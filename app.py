@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for
 from flask_mysqldb import MySQL
 
 from routes.admin_routes import admin_routes
@@ -22,6 +22,10 @@ app.register_blueprint(api_routes, url_prefix="/api")
 
 @app.route('/')
 def home():
+    if session.get('s_id') is not None:
+        return redirect(url_for('student_routes.student_dashboard'))
+    if session.get('adminid') is not None:
+        return redirect(url_for('admin_routes.admin_dashboard'))
     return render_template("index.html")
 
 
