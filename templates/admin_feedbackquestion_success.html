@@ -1,0 +1,194 @@
+{% extends "_admin_layout.html" %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <br>
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Student Detail</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+
+                                    <tr>
+                                        <th style="width: 250px;">Student Name:</th>
+                                        <td>{{ stud['studentname'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Roll no. - :</th>
+                                        <td>{{ stud['rollno'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Class:</th>
+                                        <td>{{ course['course_title'] }} ({{ stud['section'] }})
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Feedback Detail</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+
+                                    <tr>
+                                        <th style="width: 250px;">FeedBack Topic:</th>
+                                        <td>{{ rsedit['feedback_topic'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>FeedBack Detail:</th>
+                                        <td>{{ rsedit['feedbacktopic_detail'] }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+        <!-- /.content -->
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation2()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">View FeedBack Question and Answers</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <table id="tblquestionviewer" class="table table-striped table-bordered">
+                            <tbody>
+                            {% for rsqz in fbq_result %}
+                                <tr>
+                                    <td>
+
+                                        <input type="hidden" name="edtestseriesid" id="edtestseriesid"
+                                               value="{{ rsqz['feedbackquestion_resultid'] }}">
+
+                                        <table style='width: 100%;'>
+                                            <tr>
+                                                <td>
+
+                                                    <b>Question No. {{ loop.index }}: </b>
+                                                    {{ rsqz['question'] }}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Answer:</b>
+                                                    {% if rsqz['selectedanswer'] == "" %}
+                                                        Unanswered
+                                                    {% else %}
+                                                        {{ rsqz['selectedanswer'] }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+
+
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">FeedBack detail</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+
+                                    <tr>
+                                        <th style="width: 250px;">Total Questions:</th>
+                                        <td>{{ fbq_result | length }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Answered Questions:</th>
+                                        <td>{{ answered }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>UnAnswered Questions:</th>
+                                        <td>{{ unanswered }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+        </section>
+        <!-- /.content -->
+
+
+        <section class="content">
+                <div class="card">
+                    <div class="card-body">
+                        <center><input type="button" name="button" class="btn btn-info" value="Print"
+                                       onclick="window.print()"></center>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+        </section>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#tblquestionviewer').DataTable({
+                "pageLength": 1000,
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "bAutoWidth": false,
+                "sortb": x,
+            });
+        });
+    </script>
+{% endblock %}

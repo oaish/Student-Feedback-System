@@ -1,0 +1,563 @@
+{% extends "_auth-layout.html" %}
+
+{% block title %}Student Feedback - Student Register Window{% endblock %}
+
+{% block styles %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'PT Sans', sans-serif;
+            background-image: linear-gradient(#9b2a2841, #00000000), url('/static/img/greybg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            line-height: 1.6;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .heading {
+            margin: auto;
+            width: fit-content;
+            border-radius: 0.7rem;
+            text-align: center;
+            background-color: #116901;
+            color: white;
+            padding: 10px;
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        #logo {
+            height: 6rem;
+            width: 100%;
+        }
+
+
+        .main1 {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* background-color: #FFDEB4; */
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            margin-right: 5px;
+        }
+
+        .row a {
+            color: black;
+            text-decoration: none;
+            margin: 0.3rem;
+        }
+
+        .row a:hover {
+            color: #b7202e;
+        }
+
+        #trust {
+            height: 50px;
+            width: 100px;
+        }
+
+        button {
+            border: 0.3px solid #000000;
+            background-color: transparent;
+
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #116901;
+            border-color: #116901;
+            box-shadow: none;
+        }
+
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #116901;
+            border-color: #116901;
+            box-shadow: none;
+        }
+
+        .card-footer {
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 700px !important;
+            background-color: #fff;
+            padding: 25px 30px;
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .container .title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            border-radius: 5px;
+            /* background: #4070f4; */
+        }
+
+        .content form .user-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px 0 12px 0;
+        }
+
+        form .user-details .input-box {
+            margin-bottom: 15px;
+            width: calc(100% / 2 - 20px);
+        }
+
+        form .input-box span.details {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        form .input-box label.details1 {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+
+        }
+
+        .user-details .input-box input {
+            height: 45px;
+            width: 100%;
+            outline: none;
+            font-size: 16px;
+            border-radius: 5px;
+            padding-left: 15px;
+            border: 1px solid #ccc;
+            border-bottom-width: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .user-details .input-box input:focus,
+        .user-details .input-box input:valid {
+            border-color: #9b59b6;
+        }
+
+        form .gender-details .gender-title {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        form .category {
+            display: flex;
+            width: 80%;
+            margin: 14px 0;
+            justify-content: space-between;
+        }
+
+        form .category label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        form .category label .dot {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background: #d9d9d9;
+            border: 5px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        #dot-1:checked ~ .category label .one,
+        #dot-2:checked ~ .category label .two,
+        #dot-3:checked ~ .category label .three {
+            background: #9b59b6;
+            border-color: #d9d9d9;
+        }
+
+        form input[type="radio"] {
+            display: none;
+        }
+
+        form .button {
+            height: 45px;
+            margin: 35px 0
+        }
+
+        form .button input {
+            height: 100%;
+            width: 100%;
+            border-radius: 5px;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #4070f4;
+        }
+
+        form .button input:hover {
+            /* transform: scale(0.99); */
+            background: #4070f4;
+        }
+
+        @media (max-width: 584px) {
+            .container {
+                max-width: 100%;
+            }
+
+            form .user-details .input-box {
+                margin-bottom: 15px;
+                width: 100%;
+            }
+
+            form .category {
+                width: 100%;
+            }
+
+            .content form .user-details {
+                max-height: 300px;
+                overflow-y: scroll;
+            }
+
+            .user-details::-webkit-scrollbar {
+                width: 5px;
+            }
+        }
+
+        @media (max-width: 459px) {
+            .container .content .category {
+                flex-direction: column;
+            }
+        }
+
+
+        @media (max-width: 480px) {
+            .icons {
+                display: none;
+            }
+
+            #logo {
+                height: 3rem;
+                width: 100%;
+            }
+
+            .row {
+                display: none;
+            }
+
+            #trust {
+                width: 50px;
+                height: 25px;
+            }
+
+            @media (max-width: 850px) {
+                .icons {
+                    display: none;
+                }
+
+                .row {
+
+                    display: block;
+                }
+
+                #trust {
+                    width: 50px;
+                    height: 25px;
+                }
+            }
+
+        }
+
+        .form-control {
+            flex: 1;
+            padding: -13px;
+            border: 1px solid #ebebeb;
+            background-color: #ebebeb;
+            border-radius: 15px;
+            font-size: 16px;
+            transition: all 0.2s ease-out;
+            color: #000;
+            font-weight: 300;
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        .container {
+            background: #fff;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px 44px;
+            margin: 10px;
+            border: 1px solid #e1e2f0;
+            border-radius: 1rem;
+            box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.395);
+            transition: all 0.3s ease;
+        }
+
+        .title {
+            text-align: center;
+            margin: auto;
+            color: #000;
+            font-size: xx-large;
+            font-family: 'PT Sans', sans-serif;
+            font-weight: bolder;
+            border-bottom: 1px #116901 solid;
+        }
+
+        .col-12 {
+            margin-top: 15px;
+            width: auto;
+        }
+
+        .col-md-6 {
+            width: 45%;
+            display: inline-block;
+            margin: 15px;
+        }
+
+        footer {
+            background: #116901;
+            height: auto;
+            width: 100vw;
+            font-family: 'Poppins', sans-serif;
+            padding-top: 20px;
+            color: white;
+            padding-bottom: 10px;
+
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .footer-content h6 {
+
+            line-height: 1.5rem;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .footer-content p {
+
+            margin: 10px auto;
+            line-height: 30px;
+
+        }
+
+        .footer-content year {
+            font-size: 17px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% if err %}
+        <script>alert('{{ err }}')</script>
+    {% endif %}
+    <div class="main">
+        <div style="height:50px"></div>
+
+        <!-- Student Registration Window -->
+        <div class="heading">
+            <h1 style="font-weight: bold; margin-bottom:0">Student Registration</h1>
+        </div>
+
+        <div style=" height:50px">
+        </div>
+
+        <!-- Registration Form -->
+        <div class="main1">
+            <form action="/student/register" method="POST">
+                <div class="container">
+                    <div class="title">Registration</div>
+                    <br>
+                    <div class="content">
+                        <form method="post" action="" onsubmit="return confirmvalidation()"
+                              enctype="multipart/form-data">
+                            <div class="col-12">
+                                <label for="inputAddress" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" name="studentname" id="studentname"
+                                       placeholder="Enter Your Full Name" required="required"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-12">
+                                <label for="inputRollNo" class="form-label">Roll No.</label>
+                                <input type="text" class="form-control" name="rollno" id="rollno"
+                                       placeholder="Enter Your Roll No." required="required"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <label for="inputEmail4" class="form-label">Email</label>
+                                <input type="text" class="form-control" name="email_id"
+                                       placeholder="Enter Your Saboo Email Id" pattern=".+@mhssp\.edu"
+                                       required="required"
+                                       id="email_id"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <label for="inputContact" class="form-label">Mother's Contact</label>
+                                <input type="text" class="form-control" name="mothers_no" maxlength="10"
+                                       placeholder="Mother Contact" required="required" id="mothers_no"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <label for="inputContact" class="form-label">Father's Contact</label>
+                                <input type="text" class="form-control" name="fathers_no" maxlength="10"
+                                       placeholder="Father Contact" required="required" id="fathers_no"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <label for="inputContact" class="form-label">Student's Contact</label>
+                                <input type="text" class="form-control" name="student_no" maxlength="10"
+                                       placeholder="Student Contact" required="required" id="student_no"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <label for="inputContact" class="form-label">Password</label>
+                                <input type="password" class="form-control" name="password"
+                                       placeholder="Enter Your Password"
+                                       required="required" id="password"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <label for="inputPassword4" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" name="confirmpassword"
+                                       placeholder="Confirm Your Password" required="required" id="confirmpassword"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <label for="inputDOB" class="form-label">Date Of Birth</label>
+                                <input type="date" class="form-control" name="dateofbirth" id="dateofbirth"
+                                >
+                            </div>
+                            <br>
+                            <div class="col-md-12" style="height: auto;">
+                                <label for="inputDOB" class="form-label">Course</label>
+                                <!-- <div class="col-md-3">Course</div> -->
+                                <select class="form-control" name="studentclass" id="studentclass" required="required">
+                                    <option>Select Course</option>
+                                    {% for course in courses %}
+                                        <option value="{{ course['course_title'] }}">{{ course['course_description'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <br>
+                            <div class="col-md-12">
+                                <label for="input year">Year</label>
+                                <select class="form-control" name="studentclass1" id="studentclass1"
+                                        required="required">
+                                    <option>Select Year</option>
+                                    {% for year in years %}
+                                        <option value="{{ year['years_title'] }}">{{ year['years_description'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <br>
+                            <div class="col-md-12">
+                                <label for="input-section"> Division</label>
+                                <input type="text" class="form-control" name="section" id="input-section"
+                                       placeholder="Enter Your Section" required="required"
+                                >
+                                <div class="col-md-4">
+                                    <span class="errmsg flash" id="errsection" style="color: green;"></span>
+                                </div>
+                            </div>
+                            <br>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                        <!-- /.social-auth-links -->
+                        <div class="social-auth-links text-center mb-3">
+                            <input type="submit" class="btn btn-primary" name="submit" id="submit"
+                                   value=" Click Here to Register ">
+                        </div>
+                        <!-- /.social-auth-links -->
+
+                    </div>
+                    <!-- /.login-card-body -->
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div style="height:50px"></div>
+{% endblock %}
+
+{% block scripts %}
+     <script>
+        function confirmvalidation() {
+            var i = 0;
+            $('.errmsg').html('');
+            if (document.getElementById("studentname").value === "") {
+                document.getElementById("errstudentname").innerHTML = "Original Name should not be empty";
+                i = 1;
+            }
+
+            if (document.getElementById("rollno").value === "") {
+                document.getElementById("errrollno").innerHTML = "Email ID should not be empty";
+                i = 1;
+            }
+
+
+            if (document.getElementById("password").value.length < 6) {
+                document.getElementById("errpassword").innerHTML = "Password should contain more than 6 characters";
+                i = 1;
+            }
+            if (document.getElementById("password").value === "") {
+                document.getElementById("errpassword").innerHTML = "Password code should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("confirmpassword").value !== document.getElementById("password").value) {
+                document.getElementById("errconfirmpassword").innerHTML = "Password and Confirm password not matching";
+                i = 1;
+            }
+            if (document.getElementById("confirmpassword").value === "") {
+                document.getElementById("errconfirmpassword").innerHTML = "Confirm Password  should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("section").value === "") {
+                document.getElementById("errsection").innerHTML = "University Name should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("course_id").value === "") {
+                document.getElementById("errcourse_id").innerHTML = "Qualification should not be empty";
+                i = 1;
+            }
+
+            return i === 0;
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,5 @@
+{#$sqlupd  = "UPDATE feedbackquestion_result SET selectedanswer='$_GET[answer]' WHERE feedbackquestion_resultid='$_GET[feedbackquestion_resultid]'";#}
+{#$sqlqz ="SELECT * FROM feedbackquestion_result WHERE feedbacktopicid='$_SESSION[feedbacktopicid]' AND date='$_SESSION[date]' AND studentid='$_SESSION[studentid]' and selectedanswer != ''";#}
+<input type="hidden" name="answereedq" id="answereedq" value="{{ fbq_answered }}" >
+{#$sqlqz ="SELECT * FROM feedbackquestion_result WHERE feedbacktopicid='$_SESSION[feedbacktopicid]' AND date='$_SESSION[date]' AND studentid='$_SESSION[studentid]' and selectedanswer=''";#}
+<input type="hidden" name="unanswereedq" id="unanswereedq" value="{{ fbq_unanswered }}" >

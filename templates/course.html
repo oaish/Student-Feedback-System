@@ -1,0 +1,98 @@
+{% extends "_admin_layout.html" %}
+
+{% block content %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Course detail</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">Course Title</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="course_title" id="course_title"
+                                       value="{{ rs_edit['course_title'] | default('') }}"/>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errcourse_title"
+                                                        style="color: green;"></span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Course Description</div>
+                            <div class="col-md-5">
+                            <textarea class="form-control" name="course_description"
+                                      id="course_description">{{ rs_edit['course_description'] | default('') }}</textarea>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errcourse_description"
+                                                        style="color: green;"></span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Status</div>
+                            <div class="col-md-5">
+                                <select class="form-control" name="course_status" id="course_status">
+                                    <option value="">Select Status</option>
+                                    {% set status_array = ["Active","Inactive"] %}
+                                    {% for val in status_array %}
+                                        {% if rs_edit['course_status'] == val %}
+                                            <option value='{{ val }}' selected>{{ val }}</option>
+                                        {% else %}
+                                            <option value='{{ val }}'>{{ val }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errcourse_status"
+                                                        style="color: green;"></span></div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-5">
+                                <input class="btn btn-primary" type="submit" name="submit" id="submit" value="Submit">
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function confirmvalidation() {
+            let i = 0;
+            $('.errmsg').html('');
+            //
+            if (document.getElementById("course_title").value === "") {
+                document.getElementById("errcourse_title").innerHTML = "Course title should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("course_description").value === "") {
+                document.getElementById("errcourse_description").innerHTML = "Course description should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("course_status").value === "") {
+                document.getElementById("errcourse_status").innerHTML = "Course status should not be empty";
+                i = 1;
+            }
+            return i === 0;
+        }
+    </script>
+{% endblock %}

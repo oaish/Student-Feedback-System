@@ -1,0 +1,136 @@
+{% extends "_admin_layout.html" %}
+
+{% block content %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Admin Master</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">Admin Name</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="adminname" id="adminname"
+                                       value="{{ rs_edit['adminname'] | default('') }}"/>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="erradminname"
+                                                        style="color: green;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Login Id</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="loginid" id="loginid"
+                                       value="{{ rs_edit['loginid'] | default('') }}"/>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errloginid" style="color: green;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Password</div>
+                            <div class="col-md-5">
+                                <input type="password" class="form-control" name="password" id="password"
+                                       value="{{ rs_edit['password'] | default('') }}"/>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errpassword"
+                                                        style="color: green;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Confirm Password</div>
+                            <div class="col-md-5">
+                                <input type="password" class="form-control" name="confirmpassword" id="confirmpassword"
+                                       value="{{ rs_edit['password'] | default('') }}"/>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errconfirmpassword"
+                                                        style="color: green;"></span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Status</div>
+                            <div class="col-md-5">
+                                <select class="form-control" name="status" id="status">
+                                    <option value="">Select Status</option>
+                                    {% set status_array = ["Active","Inactive"] %}
+                                    {% for val in status_array %}
+                                        {% if rs_edit['status'] == val %}
+                                            <option value='{{ val }}' selected>{{ val }}</option>
+                                        {% else %}
+                                            <option value='{{ val }}'>{{ val }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errstatus" style="color: green;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-5">
+                                <input class="btn btn-primary" type="submit" name="submit" id="submit" value="Submit">
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function confirmvalidation() {
+            var i = 0;
+            $('.errmsg').html('');
+            if (document.getElementById("adminname").value === "") {
+                document.getElementById("erradminname").innerHTML = "Admin name should not be empty";
+                i = 1;
+            }
+
+            if (document.getElementById("loginid").value === "") {
+                document.getElementById("errloginid").innerHTML = "Login Id should not be empty";
+                i = 1;
+            }
+
+            if (document.getElementById("password").value === "") {
+                document.getElementById("errpassword").innerHTML = "Password should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("confirmpassword").value === "") {
+                document.getElementById("errconfirmpassword").innerHTML = "Confirm Password should not be empty";
+                i = 1;
+            }
+
+            if (document.getElementById("password").value !== document.getElementById("confirmpassword").value) {
+                document.getElementById("errconfirmpassword").innerHTML = " Confirm Password should match the password";
+                i = 1;
+            }
+
+
+            if (document.getElementById("status").value === "") {
+                document.getElementById("errstatus").innerHTML = "Kindly select the status";
+                i = 1;
+            }
+
+            return i === 0;
+        }
+    </script>
+{% endblock %}
