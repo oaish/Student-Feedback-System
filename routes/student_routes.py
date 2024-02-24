@@ -67,7 +67,8 @@ def student_register():
         """
         success = execute_update(sql_statement)
         if success:
-            return render_template('studentlogin.html', disp=True, msg='Registered Successfully')
+            return redirect(url_for("student_routes.student_login"))
+            # return redirect('studentlogin.html', disp=True, msg='Registered Successfully')
         else:
             return render_template('studentregister.html', err='Registration Failed')
 
@@ -82,6 +83,7 @@ def student_register():
 def student_dashboard():
     if session.get('s_id') is None:
         return redirect(url_for('home'))
+    print("SID DASHBOARD", session.get('s_id'))
     from app import execute_static, execute_query, execute_query_one
     email = session['s_email']
     password = session['s_password']
@@ -94,7 +96,7 @@ def student_dashboard():
         "fb_ans_count": len(execute_query(
             f"SELECT * FROM feedbackquestion_result WHERE studentid='{_id}' GROUP BY date")),
     }
-    print("SQL:", f"SELECT COUNT(*) FROM feedbacktopic WHERE course_id IN(0,{student['course_id']})")
+    # print("SQL:", f"SELECT COUNT(*) FROM feedbacktopic WHERE course_id IN(0,{student['course_id']})")
     session['s_id'] = _id
     session['course_id'] = execute_static(f"SELECT course_id FROM student WHERE studentid='{_id}'")
     return render_template('studentdashboard.html', obj=obj)
@@ -102,8 +104,9 @@ def student_dashboard():
 
 @student_routes.route('/participate_feedback/')
 def student_participate_feedback():
-    if session.get('s_id') is None:
-        return redirect(url_for('home'))
+    # if session.get('s_id') is None:
+    #     return redirect(url_for('home'))
+    print("SID PFB", session.get('s_id'))
     from app import execute_query, execute_static
     session['date'] = None
     sql = "SELECT * FROM feedbacktopic " \
@@ -129,8 +132,9 @@ def student_participate_feedback():
 
 @student_routes.route('/feedback/result')
 def feedback_result():
-    if session.get('s_id') is None:
-        return redirect(url_for('home'))
+    # if session.get('s_id') is None:
+    #     return redirect(url_for('home'))
+    print("SID FB Rez", session.get('s_id'))
     from app import execute_query_one, execute_query, execute_static
     feedbacktopicid = int(request.args.get('feedbacktopicid'))
     studentid = int(request.args.get('studentid'))
@@ -159,9 +163,10 @@ def feedback_result():
 def feedback_panel():
     if session.get('s_id') is None:
         return redirect(url_for('home'))
+    print("SID FB PANEL", session.get('s_id'))
     from app import execute_update, execute_query_one, execute_query, execute_static
     feedback_topic_id = int(request.args.get('feedbacktopicid'))
-    student_id = session['s_id']
+    student_id = session.get('s_id')
     if session.get('fbq_date') != f"{session.get('fb_topic_id')}|{session.get('date')}":
         session['date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         session['fbq_date'] = f"{feedback_topic_id}|{session['date']}"
@@ -184,12 +189,11 @@ def feedback_panel():
     sql = f"""SELECT fr.*, fq.question, fq.question_type, fq.img,
     fq.option1, fq.option2, fq.option3, fq.option4, fq.option5, fq.option6, fq.option7, fq.option8, fq.option9, fq.option10
     FROM feedbackquestion_result fr LEFT JOIN feedbackquestion fq ON fr.feedbackquestionid = fq.feedbackquestionid 
-    WHERE fr.feedbacktopicid = '{feedback_topic_id}' AND fr.studentid = '{session['s_id']}' 
+    WHERE fr.feedbacktopicid = '{feedback_topic_id}' AND fr.studentid = '{session.get('s_id')}' 
     ORDER BY fr.feedbackquestion_resultid"""
     fbq_rez = execute_query(sql)
-    print("FBQ REZ:", fbq_rez)
     return render_template('feedbackpanel.html', rs=rs, stud=stud, fbq_rez=fbq_rez, fbq_answered=fbq_answered,
-                           fbq_unanswered=fbq_unanswered, fbt=feedback_topic_id, sid=session['s_id'])
+                           fbq_unanswered=fbq_unanswered, fbt=feedback_topic_id, sid=session.get('s_id'))
 
 
 @student_routes.route('/profile', methods=['GET', 'POST'])

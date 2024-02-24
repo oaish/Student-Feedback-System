@@ -1,60 +1,3 @@
-{#<?php#}
-{#if (session_status() === PHP_SESSION_NONE) { session_start(); }#}
-{#error_reporting(0);#}
-{#date_default_timezone_set("Asia/Calcutta");#}
-{#$dttim = date("Y-m-d H:i:s");#}
-{#$dt = date("Y-m-d");#}
-{#if(isset($_SESSION['adminid']))#}
-{#{#}
-{# echo "<script>window.location='admindashboard.php';</script>";#}
-{#}#}
-{#if(isset($_SESSION['studentid']))#}
-{#{#}
-{# echo "<script>window.location='studentdashboard.php';</script>";#}
-{#}#}
-{#include("database.php");#}
-{#//  #}
-{#if(isset($_POST['submit']))#}
-{#{#}
-{#	if(isset($_GET['editid']))#}
-{#	{#}
-{#		$sql ="UPDATE student SET studentname='".$_POST['studentname']."',dateofbirth='".$_POST['dateofbirth']."',password='".$_POST['password']."',course_id='".$_POST['studentclass']."',section='".$_POST['section']."',status='".$_POST['status']."' WHERE studentid='".$_GET['editid']."'";#}
-{#		$qsql = mysqli_query($con,$sql);#}
-{#			echo mysqli_error($con);#}
-{#		if(mysqli_affected_rows($con) ==1)#}
-{#		{			#}
-{#			echo "<script>alert('Student updated successfully...');</script>";#}
-{#		}#}
-{#	}#}
-{#	else#}
-{#	{#}
-{#$sql = "INSERT INTO student SET studentname='".$_POST['studentname']."',email_id='".$_POST['email_id']."',student_no='".$_POST['student_no']."',mothers_no='".$_POST['mothers_no']."',fathers_no='".$_POST['fathers_no'] . "',rollno='" . $_POST['rollno'] . "',dateofbirth='" . $_POST['dateofbirth'] . "',password='" . $_POST['password'] . "',course_id='" . $_POST['studentclass'] . "',years_id='" . $_POST['studentclass1'] . "',section='" . $_POST['section'] . "',status='Active', academicyear='2022-23' ";#}
-{#		$qsql = mysqli_query($con,$sql);#}
-{#			echo mysqli_error($con);#}
-{#		if(mysqli_affected_rows($con) ==1)#}
-{#		{#}
-{#//#####REGISTRATION MAIL STARTS HERE#}
-{#$message = "Welcome $_POST[studentname],<br>#}
-{#You have registered successfully to Student Feedback System. Our staff will verify your account and send Activation notification when it is done...<br>Thank you...";#}
-{#include("phpmailer.php");#}
-{#sendmail($_POST['rollno'], $_POST['studentname'] , "Student Feedback System Registration Notification..", $message);#}
-{#//#####REGISTRATION MAIL ENDS HERE		#}
-{#			echo "<script>alert('Your registration request sent successfully...');</script>";#}
-{#			echo "<script>window.location='index.php';</script>";#}
-{#		}#}
-{#	}#}
-{#}#}
-{#?>#}
-{#<?php#}
-{#if(isset($_GET['editid']))#}
-{#{#}
-{#	//Step 2 : Select statement starts here#}
-{#	$sqledit ="SELECT * FROM student WHERE studentid='".$_GET['editid']."'";#}
-{#	$qsqledit = mysqli_query($con,$sqledit);#}
-{#	$rsedit = mysqli_fetch_array($qsqledit);#}
-{#	//Step 2 : Select statement ends here#}
-{#}#}
-{#?>#}
 {% extends "_auth-layout.html" %}
 
 {% block title %}Student Feedback - Student Register Window{% endblock %}
@@ -78,7 +21,7 @@
             width: fit-content;
             border-radius: 0.7rem;
             text-align: center;
-            background-color: #9b2928;
+            background-color: #116901;
             color: white;
             padding: 10px;
             font-family: 'PT Sans', sans-serif;
@@ -135,15 +78,15 @@
 
         .btn-primary {
             color: #fff;
-            background-color: #9b2928;
-            border-color: #9b2928;
+            background-color: #116901;
+            border-color: #116901;
             box-shadow: none;
         }
 
         .btn-primary:hover {
             color: #fff;
-            background-color: #9b2928;
-            border-color: #9b2928;
+            background-color: #116901;
+            border-color: #116901;
             box-shadow: none;
         }
 
@@ -376,7 +319,7 @@
             font-size: xx-large;
             font-family: 'PT Sans', sans-serif;
             font-weight: bolder;
-            border-bottom: 1px #9b2928 solid;
+            border-bottom: 1px #116901 solid;
         }
 
         .col-12 {
@@ -391,7 +334,7 @@
         }
 
         footer {
-            background: #9B2928;
+            background: #116901;
             height: auto;
             width: 100vw;
             font-family: 'Poppins', sans-serif;
@@ -470,7 +413,7 @@
                             <div class="col-md-12">
                                 <label for="inputEmail4" class="form-label">Email</label>
                                 <input type="text" class="form-control" name="email_id"
-                                       placeholder="Enter Your Somaiya Email Id" pattern=".+@somaiya\.edu"
+                                       placeholder="Enter Your Saboo Email Id" pattern=".+@mhssp\.edu"
                                        required="required"
                                        id="email_id"
                                 >
@@ -548,7 +491,7 @@
                                        placeholder="Enter Your Section" required="required"
                                 >
                                 <div class="col-md-4">
-                                    <span class="errmsg flash" id="errsection" style="color: red;"></span>
+                                    <span class="errmsg flash" id="errsection" style="color: green;"></span>
                                 </div>
                             </div>
                             <br>
@@ -614,11 +557,7 @@
                 i = 1;
             }
 
-            if (i == 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return i === 0;
         }
     </script>
 {% endblock %}

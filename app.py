@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, url_for
+from flask import Flask, render_template, session, redirect, url_for, send_file
 from flask_mysqldb import MySQL
 
 from routes.admin_routes import admin_routes
@@ -27,6 +27,16 @@ def home():
     if session.get('adminid') is not None:
         return redirect(url_for('admin_routes.admin_dashboard'))
     return render_template("index.html")
+
+
+@app.route('/manifest.json')
+def serve_manifest():
+    return send_file('manifest.json', mimetype='application/manifest+json')
+
+
+@app.route('/sw.js')
+def serve_sw():
+    return send_file('sw.js', mimetype='application/javascript')
 
 
 def execute_static(query):

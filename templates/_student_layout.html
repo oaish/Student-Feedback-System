@@ -6,6 +6,18 @@
     <title>Student Panel - Student Feedback System..</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register("/sw.js").then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -31,6 +43,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
     <style>
         .flash {
             animation-name: flash;
@@ -43,7 +56,7 @@
 
         @keyframes flash {
             from {
-                color: red;
+                color: green;
             }
             to {
                 color: black;
@@ -167,7 +180,7 @@
     <footer class="main-footer"
             style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <strong style="color:#007bff;"> Department of Computer Engineering</strong>
-        <strong>Guided by : Prof. Mohammed Ali</strong>
+        <strong>Guided by : Prof. Mohammad Ali</strong>
         <strong><a href="others/aboutus.html">Developed by : Mohsin Shaikh, Muzammil Shaikh, Chirag
             Gothankar </a></strong>
     </footer>

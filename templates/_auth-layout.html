@@ -4,6 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register("/sw.js").then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
     <link rel="shortcut icon" href="/img/FAVICON1.png" type="image/x-icon">
     <!-- Font Awesome -->
     <link href="/static/plugins/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -31,7 +43,7 @@
         .heading-title {
             text-align: center;
             font-weight: bolder;
-            background-color: #9b2928;
+            background-color: #116901;
             color: white;
         }
 
@@ -53,7 +65,7 @@
         }
 
         .row a:hover {
-            color: #b7202e;
+            color: #32b720;
         }
 
         .icons {
@@ -70,7 +82,7 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            border: 2px solid #9b2928;
+            border: 2px solid #116901;
             border-radius: 10px;
             box-shadow: 5px 5px 8px gray;
             margin-left: 45px;
@@ -81,7 +93,7 @@
         .card-title {
             font-size: x-large;
             font-weight: bold;
-            color: #9b2928;
+            color: #116901;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -142,7 +154,7 @@
 
 
         footer {
-            background: #9B2928;
+            background: #116901;
             height: auto;
             width: 100vw;
             font-family: 'Poppins', sans-serif;
@@ -180,7 +192,7 @@
 
 
         footer {
-            background: #9B2928;
+            background: #116901;
             height: auto;
             width: 100vw;
             font-family: 'Poppins', sans-serif;
@@ -225,7 +237,7 @@
         .modal-flash button {
             border-radius: 5px;
             color: white;
-            background: #9B2928;
+            background: #116901;
         }
     </style>
 
@@ -235,20 +247,21 @@
     {% block styles %}
     {% endblock %}
 </head>
-<body style="background-image: linear-gradient(#9b2a286b,#00000000), url('/img/greybg.jpg'); background-size: cover;">
+<body style="background-image: linear-gradient(#3f9b286b,#00000000), url('/img/greybg.jpg'); background-size: cover;">
 
 <!-- nav bar code start-->
 <div class="nav">
     <nav>
         <div class="img">
-            <img id="logo" src="/static/img/Somaiya1.png" alt="">
+            <img id="logo" src="/static/img/mhsspfinallogo.jpeg" alt="">
+
         </div>
         <div class="row">
 
             <div class="icons">
-                <button type="button" name="button"><a href="https://www.somaiya.edu.in/en" target="_blank"
+                <button type="button" name="button"><a href="https://www.mhssce.ac.in/" target="_blank"
                                                        style="color: black !important;">
-                    <i class="bi bi-globe"></i> somaiya.edu
+                    <i class="bi bi-globe"></i> mhssp.edu
                 </a></button>
                 <a href="https://www.facebook.com/kjsieitofficial" target="_blank">
                     <i class="bi bi-facebook style='#000000'"></i>
@@ -266,7 +279,7 @@
                    target="_blank">
                     <i class="bi bi-linkedin"></i>
                 </a>
-                <img id="trust" src="/static/img/Trust.png" alt="">
+
             </div>
         </div>
     </nav>
@@ -284,7 +297,7 @@
     <div class="footer-content">
         <h6>Department Of Computer Engineering</h6>
         <h6 class="year"><i class="bi bi-c-circle"></i> 2023-24</h6>
-        <a href="others/aboutus.html" style="color:white !important"><h6>Guided by : Prof. Mohammed Ali</h6>
+        <a href="others/aboutus.html" style="color:white !important"><h6>Guided by : Prof. Mohammad Ali</h6>
             <h6>Developed by : Mohsin Shaikh, Muzammil Shaikh, Chirag Gothankar</h6>
         </a>
     </div>

@@ -19,7 +19,7 @@
                                 Feedback Topic*
                                 <input type="text" class="form-control" name="feedback_topic" id="feedback_topic"
                                        value="{{ rs_edit['feedback_topic'] }}">
-                                <span class="errmsg flash" id="errfeedback_topic" style="color: red;"></span>
+                                <span class="errmsg flash" id="errfeedback_topic" style="color: green;"></span>
                             </div>
                         </div>
                         <br>
@@ -38,7 +38,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </select>
-                                <span class="errmsg flash" id="errstudentclass" style="color: red;"></span>
+                                <span class="errmsg flash" id="errstudentclass" style="color: green;"></span>
                             </div>
                             <div class="col-md-12">
                                 <br>Faculty
@@ -53,7 +53,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </select>
-                                <span class="errmsg flash" id="errstudentclass" style="color: red;"></span>
+                                <span class="errmsg flash" id="errstudentclass" style="color: green;"></span>
                             </div>
                         </div>
                         <br>
@@ -62,7 +62,7 @@
                                 Feedback Topic Description
                                 <textarea class="form-control" name="feedbacktopic_detail"
                                           id="feedbacktopic_detail">{{ rs_edit['feedbacktopic_detail'] }}</textarea>
-                                <span class="errmsg flash" id="errfeedbacktopic_detail" style="color: red;"></span>
+                                <span class="errmsg flash" id="errfeedbacktopic_detail" style="color: green;"></span>
                             </div>
                         </div>
                         <br>
@@ -79,7 +79,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </select>
-                            <span class="errmsg flash" id="errfeedback_disptype" style="color: red;"></span>
+                            <span class="errmsg flash" id="errfeedback_disptype" style="color: green;"></span>
                         </div>
                     </div>
                     <br>
@@ -136,7 +136,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </select>
-                                <span class="errmsg flash" id="errquestion_type" style="color: red;"></span>
+                                <span class="errmsg flash" id="errquestion_type" style="color: green;"></span>
                             </div>
                         </div>
                         <br>
@@ -146,7 +146,7 @@
                                 <textarea class="form-control" name="question"
                                           id="question">{% if rs_question_edit %}
                                     {{ rs_question_edit.get('question') }}{% endif %}</textarea>
-                                <span class="errmsg flash" id="errquestion" style="color: red;"></span>
+                                <span class="errmsg flash" id="errquestion" style="color: green;"></span>
                             </div>
                         </div>
                         <br>
@@ -157,14 +157,14 @@
                                     <textarea class="form-control" name="option1"
                                               id="option1">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option1') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption1" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption1" style="color: green;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <b>Option 2</b>
                                     <textarea class="form-control" name="option2"
                                               id="option2">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option2') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption2" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption2" style="color: green;"></span>
                                 </div>
                             </div>
                             <br>
@@ -174,14 +174,14 @@
                                     <textarea class="form-control" name="option3"
                                               id="option3">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option3') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption3" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption3" style="color: green;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <b>Option 4</b>
                                     <textarea class="form-control" name="option4"
                                               id="option4">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option4') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption4" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption4" style="color: green;"></span>
                                 </div>
                             </div>
                             <br>
@@ -191,14 +191,14 @@
                                     <textarea class="form-control" name="option5"
                                               id="option5">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option10') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption5" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption5" style="color: green;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <b>Option 6</b>
                                     <textarea class="form-control" name="option6"
                                               id="option6">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option6') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption6" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption6" style="color: green;"></span>
                                 </div>
                             </div>
                             <br>
@@ -208,14 +208,14 @@
                                     <textarea class="form-control" name="option7"
                                               id="option7">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option7') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption7" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption7" style="color: green;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <b>Option 8</b>
                                     <textarea class="form-control" name="option8"
                                               id="option8">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option8') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption8" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption8" style="color: green;"></span>
                                 </div>
                             </div>
                             <br>
@@ -225,14 +225,14 @@
                                     <textarea class="form-control" name="option9"
                                               id="option9">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option9') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption9" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption9" style="color: green;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <b>Option 10</b>
                                     <textarea class="form-control" name="option10"
                                               id="option10">{% if rs_question_edit %}
                                         {{ rs_question_edit.get('option10') }}{% endif %}</textarea>
-                                    <span class="errmsg flash" id="erroption10" style="color: red;"></span>
+                                    <span class="errmsg flash" id="erroption10" style="color: green;"></span>
                                 </div>
                             </div>
                             <br>
@@ -285,7 +285,7 @@
                                                 <textarea readonly class="form-control" name="edquestion"
                                                           id="edquestion">{{ q['question'] }}</textarea>
                                                 <span class="errmsg flash" id="erredquestion"
-                                                      style="color: red;"></span>
+                                                      style="color: green;"></span>
                                             </div>
                                         </div>
                                         <br>
@@ -301,7 +301,7 @@
                                                                       id="edoption1"
                                                                       required>{{ q['option' ~ i] }}</textarea>
                                                             <span class="errmsg flash" id="erredoption1"
-                                                                  style="color: red;"></span>
+                                                                  style="color: green;"></span>
                                                         </div>
                                                     {% endif %}
                                                     {% if q['option' ~ j] != "" %}
@@ -311,7 +311,7 @@
                                                                       name="edoption{{ j }}"
                                                                       id="edoption2">{{ q['option' ~ j] }}</textarea>
                                                             <span class="errmsg flash" id="erredoption2"
-                                                                  style="color: red;"></span>
+                                                                  style="color: green;"></span>
                                                         </div>
                                                     {% endif %}
                                                 </div>
@@ -334,7 +334,7 @@
                                                     {% endfor %}
                                                 </select>
                                                 <span class="errmsg flash" id="erredquestion_type"
-                                                      style="color: red;"></span>
+                                                      style="color: green;"></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <b>Status*</b>
@@ -349,7 +349,7 @@
                                                     {% endfor %}
                                                 </select>
                                                 <span class="errmsg flash" id="erredstatus"
-                                                      style="color: red;"></span>
+                                                      style="color: green;"></span>
                                             </div>
                                         </div>
                                         <br>

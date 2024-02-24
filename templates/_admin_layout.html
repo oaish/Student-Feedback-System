@@ -6,6 +6,18 @@
     <title>Admin Panel - Feedback System </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register("/sw.js").then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -44,7 +56,7 @@
 
         @keyframes flash {
             from {
-                color: red;
+                color: green;
             }
             to {
                 color: black;
@@ -100,13 +112,13 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/admin/dashboard/" class="brand-link">
-            <img src="/static/img/Somaiya.png"
+            <img src="/static/img/mhssplogo1.png"
                  class="brand-image img-circle elevation-3"
                  style="opacity: .8; object-fit: cover; width: 33px; aspect-ratio: 1">
             <span class="brand-text font-weight-light">Feedback Portal</span>
         </a>
         <!-- Sidebar -->
-        <div class="sidebar" style="color:#9B2928">
+        <div class="sidebar" style="color:#289b3f">
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
@@ -256,7 +268,7 @@
     <footer class="main-footer"
             style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <strong style="color:#007bff;"> Department of Computer Engineering</strong>
-        <strong>Guided by : Prof. Mohammed Ali</strong>
+        <strong>Guided by : Prof. Mohammad Ali</strong>
         <strong><a href="others/aboutus.html">Developed by : Mohsin Shaikh, Muzammil Shaikh, Chirag
             Gothankar </a></strong>
     </footer>
