@@ -1,0 +1,428 @@
+{% extends "_auth-layout.html" %}
+
+{% block title %}Student Feedback - Student Login Window{% endblock %}
+
+{% block styles %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        .heading {
+
+            text-align: center;
+            font-weight: bolder;
+            background-color: #9b2928;
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        .row a {
+            color: black;
+            text-decoration: none;
+            margin: 0.3rem;
+        }
+
+        .row a:hover {
+            color: #b7202e;
+        }
+
+        button {
+            border: 0.3px solid #000000;
+            background-color: transparent;
+
+
+        }
+
+        /* ===== Google Font Import - Poformsins ===== */
+
+        .main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .container {
+            position: relative;
+            max-width: 430px;
+            width: 100%;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.395);
+            overflow: hidden;
+            margin: 0 20px;
+
+        }
+
+        .container .forms {
+            display: flex;
+            align-items: center;
+            /* height: 440px; */
+            width: 200%;
+            transition: height 0.2s ease;
+
+        }
+
+        .forms {
+            box-shadow: 10px 10px 10px red;
+        }
+
+        .container .form {
+            width: 50%;
+            padding: 30px;
+            background-color: #fff;
+            transition: margin-left 0.18s ease;
+        }
+
+        .container .signup {
+            opacity: 0;
+            transition: opacity 0.09s ease;
+        }
+
+        .container.active .signup {
+            opacity: 1;
+            transition: opacity 0.2s ease;
+        }
+
+        .container.active .forms {
+            height: 600px;
+        }
+
+        .container .form .title {
+            position: relative;
+            font-size: 27px;
+            font-weight: 600;
+        }
+
+        .form .title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            border-radius: 25px;
+        }
+
+        .form .input-field {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .input-field input {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            padding: 0 35px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            border-bottom: 2px solid #ccc;
+            border-top: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .input-field input:is(:focus, :valid) {
+            border-bottom-color: #4070f4;
+        }
+
+        .input-field i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 23px;
+            transition: all 0.2s ease;
+        }
+
+        .input-field input:is(:focus, :valid) ~ i {
+            color: #4070f4;
+        }
+
+        .input-field i.icon {
+            left: 0;
+        }
+
+        .input-field i.showHidePw {
+            right: 0;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .form .checkbox-text {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .checkbox-text .checkbox-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-content input {
+            margin-right: 10px;
+            accent-color: #4070f4;
+            margin-bottom: 7px;
+        }
+
+        .form .text {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form a.text {
+            color: #9b2928;
+            text-decoration: none;
+        }
+
+        .form a:hover {
+            text-decoration: underline;
+        }
+
+        .form .button {
+            margin-top: 35px;
+        }
+
+        .form .button input {
+            background-color: #9b2928;
+            border: none;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button input:hover {
+            background-color: #9b2928;
+
+        }
+
+        .form .login-signup {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .heading {
+            border-radius: 0.5rem;
+            text-align: center;
+            margin: auto;
+            color: #000;
+            font-size: xx-large;
+            font-family: 'PT Sans', sans-serif;
+            font-weight: 700;
+
+        }
+
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            margin-top: 25px;
+            margin-inline: auto;
+        }
+
+        .inputs label {
+            color: #000000;
+            font-weight: 600;
+            font-size: medium;
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        .inputs input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #ebebeb;
+            background-color: #ebebeb;
+            border-radius: 20px;
+            font-size: 16px;
+            transition: all 0.2s ease-out;
+            color: #000;
+            font-weight: 300;
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        .form-check {
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .form-check .forgot {
+            text-decoration: none;
+            color: #9b2928;
+            font-weight: 600;
+            float: left;
+            margin-right: 100px;
+        }
+
+        .inputs label {
+            color: #000000;
+            font-weight: 600;
+            font-size: medium;
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        .forgot {
+            float: right;
+        }
+
+        .forgot a {
+            color: #9b2928;
+            text-decoration: none;
+            font-family: 'PT Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        @media (min-width: 317px)and (max-width: 445px) {
+            .form-check .forgot {
+                text-decoration: none;
+                color: #9b2928;
+                font-weight: 600;
+                float: left;
+                margin-right: 100px;
+            }
+
+            .forgot {
+                position: relative;
+            }
+        }
+
+        @media (min-width: 220px)and (max-width: 332px) {
+            .forgot {
+                display: block;
+                float: left;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <!-- Student Login Window -->
+
+    {% if disp %}
+        <dialog open class="modal-flash">
+            <p>{{ msg }}</p>
+            <form method="dialog">
+                <button type="submit">OK</button>
+            </form>
+        </dialog>
+    {% endif %}
+
+    <div class="heading" style="width: fit-content;">
+        <h1 style="font-weight: bold; color: #FFFFFF;margin: 0.5em; padding:10px" class="heading">Student Login</h1>
+    </div>
+
+
+    <!-- Login Form -->
+    <div class="main">
+        <div class="container">
+            <div class="forms">
+                <div class="form login">
+                    <p class="heading" style="background-color: #ffffff; border-bottom: 1px #9b2928 solid;"><span
+                            class="title">Login</span></p>
+                    <form action="" method="post">
+                        <div class="input-field inputs">
+                            <label for="email">Email</label>
+                            <input type="text" name="emailid" id="emailid" class="form-control"
+                                   style="margin-top: 30px;"
+                                   placeholder="Enter your email" required="required">
+                            <i class="uil uil-envelope icon"></i>
+                        </div>
+                        <br>
+                        <div class="input-field inputs">
+                            <label for="email">Password</label>
+                            <input type="password" name="loginpassword" id="loginpassword" style="margin-top: 30px;"
+                                   class="form-control" placeholder="Enter your password" required="required">
+                            <i class="uil uil-lock icon"></i>
+                            <i class="uil uil-eye-slash showHidePw"></i>
+                        </div>
+                        <br><br>
+                        <div class="checkbox-text form-check  ">
+                            <div class="checkbox-content form-check-input" style="margin-top: 40px;">
+                                <input type="checkbox" name="remember" id="logCheck">
+                                <label for="logCheck" class="text">Remember me</label>
+                            </div>
+                        </div>
+                        <div class="forgot">
+{#                            <a href="#" class="text">Forgot password?</a>#}
+                        </div>
+                        <div class="input-field button">
+                            <input type="submit" value="Login" name="btnsubmit">
+                        </div>
+                    </form>
+                    <div class="login-signup">
+                    <span class="text" style=" font-size: 20px;">Not a member?
+                        <a href="/student/register/" class="text signup-link"
+                           style=" font-size: 20px;"><b>Signup Now</b></a>
+                    </span>
+                    </div>
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+    <br>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const container = document.querySelector(".container"),
+            pwShowHide = document.querySelectorAll(".showHidePw"),
+            pwFields = document.querySelectorAll(".password"),
+            signUp = document.querySelector(".signup-link"),
+            login = document.querySelector(".login-link");
+
+        //   js code to show/hide password and change icon
+        pwShowHide.forEach(eyeIcon => {
+            eyeIcon.addEventListener("click", () => {
+                pwFields.forEach(pwField => {
+                    if (pwField.type === "password") {
+                        pwField.type = "text";
+
+                        pwShowHide.forEach(icon => {
+                            icon.classList.replace("uil-eye-slash", "uil-eye");
+                        })
+                    } else {
+                        pwField.type = "password";
+
+                        pwShowHide.forEach(icon => {
+                            icon.classList.replace("uil-eye", "uil-eye-slash");
+                        })
+                    }
+                })
+            })
+        })
+
+        // js code to appear signup and login form
+        signUp.addEventListener("click", () => {
+            container.classList.add("active");
+        });
+        login.addEventListener("click", () => {
+            container.classList.remove("active");
+        });
+    </script>
+{% endblock %}
+
+  
+
+
+
+
+
+
+  

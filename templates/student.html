@@ -1,0 +1,194 @@
+{% extends "_admin_layout.html" %}
+
+{% block content %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <br>
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Student Entry</h3>
+                    </div>
+                    <div class="card-body">
+                        {# {% if rs_edit[] %}{{ rs_edit[] }}{% endif %}#}
+
+                        <div class="row">
+                            <div class="col-md-3">Full Name</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="studentname" id="studentname"
+                                       value="{{ rs_edit['studentname'] | default('') }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errstudentname"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Roll Number</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="rollno" id="rollno"
+                                       value="{{ rs_edit['rollno'] | default('') }}">
+
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errrollno" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-3">Password</div>
+                            <div class="col-md-5">
+                                <input type="password" class="form-control" name="password" id="password"
+                                       value="{{ rs_edit['password'] | default('') }}">
+
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errpassword"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Confirm Password</div>
+                            <div class="col-md-5">
+                                <input type="password" class="form-control" name="confirmpassword" id="confirmpassword"
+                                       value="{{ rs_edit['password'] | default('') }}">
+
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errconfirmpassword"
+                                                        style="color: red;"></span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Date of Birth</div>
+                            <div class="col-md-5">
+                                <input type="date" class="form-control" name="dateofbirth" id="dateofbirth"
+                                       value="{{ rs_edit['dateofbirth'] | default('') }}">
+
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errdateofbirth"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Course</div>
+                            <div class="col-md-5">
+                                <select class="form-control" name="studentclass" id="studentclass">
+                                    <option value="0">Select Course</option>
+                                    {% for course in courses %}
+                                        {% if course['course_id'] == rs_edit['course_id'] %}
+                                            <option value="{{ course['course_id'] }}" selected>{{ course['course_description'] }}</option>
+                                        {% else %}
+                                            <option value="{{ course['course_id'] }}">{{ course['course_description'] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errstudentclass"
+                                                        style="color: red;"></span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Section</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="section" id="section"
+                                       value="{{ rs_edit['section'] | default('') }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errsection" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Status</div>
+                            <div class="col-md-5">
+                                <select class="form-control" name="status" id="status">
+                                    <option value=''>Select status</option>
+                                    {% set status_array = ["Active","Inactive"] %}
+                                    {% for val in status_array %}
+                                        {% if rs_edit['status'] == val %}
+                                            <option value='{{ val }}' selected>{{ val }}</option>
+                                        {% else %}
+                                            <option value='{{ val }}'>{{ val }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errstatus" style="color: red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5">
+                                <input class="btn btn-primary btn-block" type="submit" name="submit" id="submit"
+                                       value="Submit">
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function confirmvalidation() {
+            let i = 0;
+            $('.errmsg').html('');
+            if (document.getElementById("studentname").value === "") {
+                document.getElementById("errmsg").innerHTML = "Original Name should not be empty";
+                i = 1;
+            }
+
+            if (document.getElementById("rollno").value === "") {
+                document.getElementById("errmsg").innerHTML = "Email ID should not be empty";
+                i = 1;
+            }
+
+
+            if (document.getElementById("password").value.length < 6) {
+                document.getElementById("errmsg").innerHTML = "Password should contain more than 6 characters";
+                i = 1;
+            }
+            if (document.getElementById("password").value === "") {
+                document.getElementById("errmsg").innerHTML = "Password code should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("confirmpassword").value !== document.getElementById("password").value) {
+                document.getElementById("errmsg").innerHTML = "Password and Confirm password not matching";
+                i = 1;
+            }
+            if (document.getElementById("confirmpassword").value === "") {
+                document.getElementById("errmsg").innerHTML = "Confirm Password  should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("section").value === "") {
+                document.getElementById("errmsg").innerHTML = "University Name should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("studentclass").value === "") {
+                document.getElementById("errmsg").innerHTML = "Course should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("status").value === "") {
+                document.getElementById("errmsg").innerHTML = "Kindly select the status";
+                i = 1;
+            }
+
+            return i === 0;
+        }
+    </script>
+{% endblock %}
