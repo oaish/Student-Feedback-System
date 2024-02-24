@@ -1,0 +1,508 @@
+{% extends "_admin_layout.html" %}
+
+{% block content %}
+    <div class="content-wrapper">
+
+        <br>
+        <section class="content">
+            <form method="post" action="/admin/feedback/topic/add" onsubmit="return confirmvalidation()"
+                  enctype="multipart/form-data">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Feedback Topic</h3>
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" name="feedback_topic_id" id="feedback_topic_id"
+                               value="{% if feedback_topic_id %}{{ feedback_topic_id }}{% else %}{{ "" }}{% endif %}">
+                        <div class="row">
+                            <div class="col-md-12">
+                                Feedback Topic*
+                                <input type="text" class="form-control" name="feedback_topic" id="feedback_topic"
+                                       value="{{ rs_edit['feedback_topic'] }}">
+                                <span class="errmsg flash" id="errfeedback_topic" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                Course
+                                <label for="course_id"></label>
+                                <select class="form-control" name="course_id" id="course_id">
+                                    <option value="">Select Course</option>
+                                    {% for course in courses %}
+                                        {% if course['course_id'] == rs_edit['course_id'] %}
+                                            <option value="{{ course['course_id'] }}"
+                                                    selected>{{ course['course_description'] }}</option>
+                                        {% else %}
+                                            <option value="{{ course['course_id'] }}">{{ course['course_description'] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <span class="errmsg flash" id="errstudentclass" style="color: red;"></span>
+                            </div>
+                            <div class="col-md-12">
+                                <br>Faculty
+                                <select class="form-control" name="faculty_id" id="faculty_id">
+                                    <option value="">Select Faculty</option>
+                                    {% for faculty in faculties %}
+                                        {% if faculty['faculty_id'] == rs_edit['faculty_id'] %}
+                                            <option value="{{ faculty['faculty_id'] }}"
+                                                    selected>{{ faculty['faculty_name'] + " - "+ faculty['faculty_designation'] }}</option>
+                                        {% else %}
+                                            <option value="{{ faculty['faculty_id'] }}">{{ faculty['faculty_name'] + " - "+ faculty['faculty_designation'] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <span class="errmsg flash" id="errstudentclass" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                Feedback Topic Description
+                                <textarea class="form-control" name="feedbacktopic_detail"
+                                          id="feedbacktopic_detail">{{ rs_edit['feedbacktopic_detail'] }}</textarea>
+                                <span class="errmsg flash" id="errfeedbacktopic_detail" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-6">
+                            Feedback Viewer Type*
+                            <select name="feedback_disptype" id="feedback_disptype" class="form-control" required>
+                                <option value="">Select option</option>
+                                {% set viewer = ["Pagination Viewer","One Page Viewer"] %}
+                                {% for view in viewer %}
+                                    {% if view == rs_edit['feedback_disptype'] %}
+                                        <option value='{{ view }}' selected>{{ view }}</option>";
+                                    {% else %}
+                                        <option value='{{ view }}'>{{ view }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <span class="errmsg flash" id="errfeedback_disptype" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        {% if feedback_topic_id %}
+                            <div class="col-md-4">
+                                <input class="form-control" type="submit" name="submit" id="submit"
+                                       value="Update Question Paper">
+                            </div>
+                            <div class="col-md-8" style="text-align: right;">
+                                <b>{{ rs_edit['feedbacktopic_status'] }}</b> |
+                                <a href="/admin/feedback/topic/add?feedbacktopicid={{ feedback_topic_id }}&st=Approved"
+                                   class="btn btn-primary">Activate</a>
+                                <a href="/admin/feedback/topic/add?feedbacktopicid={{ feedback_topic_id }}&st=Rejected"
+                                   class="btn btn-secondary">Deactivate</a>
+                                <a href="/admin/feedback/topic/add?feedbacktopicid={{ feedback_topic_id }}&del=True"
+                                   class="btn btn-danger" onclick="return validatedel()">Delete Feedback</a>
+                            </div>
+                        {% else %}
+                            <div class="col-md-12">
+                                <center><input class="btn btn-info" type="submit" name="submit" id="submit"
+                                               value="Post Feedback"></center>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </section>
+    {% if feedback_topic_id %}
+        <!-- Main content -->
+        <section class="content" style="padding: 0 0.5rem;">
+            <form method="get" name="addQuestion" action="" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header" style="background: goldenrod;">
+                        <h3 class="card-title" style="color: white">Add Feedback Questions</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b>Question Type*</b>
+                                <select class="form-control" name="question_type" id="question_type" required>
+                                    <option value=''>Select Question Type</option>
+                                    {% set arr = ["Radio Button","Check Box","Text Box"] %}
+                                    {% for val in arr %}
+                                        {% if rs_question_edit.get('question_type') == val %}
+                                            {% set q_type = val %}
+                                            <option value="{{ val }}" selected>{{ val }}</option>
+                                        {% else %}
+                                            <option value="{{ val }}">{{ val }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <span class="errmsg flash" id="errquestion_type" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b>Question*</b>
+                                <textarea class="form-control" name="question"
+                                          id="question">{% if rs_question_edit %}
+                                    {{ rs_question_edit.get('question') }}{% endif %}</textarea>
+                                <span class="errmsg flash" id="errquestion" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div id="idhidden">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b>Option 1*</b>
+                                    <textarea class="form-control" name="option1"
+                                              id="option1">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option1') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption1" style="color: red;"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <b>Option 2</b>
+                                    <textarea class="form-control" name="option2"
+                                              id="option2">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option2') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption2" style="color: red;"></span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b>Option 3</b>
+                                    <textarea class="form-control" name="option3"
+                                              id="option3">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option3') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption3" style="color: red;"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <b>Option 4</b>
+                                    <textarea class="form-control" name="option4"
+                                              id="option4">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option4') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption4" style="color: red;"></span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b>Option 5</b>
+                                    <textarea class="form-control" name="option5"
+                                              id="option5">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option10') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption5" style="color: red;"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <b>Option 6</b>
+                                    <textarea class="form-control" name="option6"
+                                              id="option6">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option6') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption6" style="color: red;"></span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b>Option 7</b>
+                                    <textarea class="form-control" name="option7"
+                                              id="option7">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option7') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption7" style="color: red;"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <b>Option 8</b>
+                                    <textarea class="form-control" name="option8"
+                                              id="option8">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option8') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption8" style="color: red;"></span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b>Option 9</b>
+                                    <textarea class="form-control" name="option9"
+                                              id="option9">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option9') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption9" style="color: red;"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <b>Option 10</b>
+                                    <textarea class="form-control" name="option10"
+                                              id="option10">{% if rs_question_edit %}
+                                        {{ rs_question_edit.get('option10') }}{% endif %}</textarea>
+                                    <span class="errmsg flash" id="erroption10" style="color: red;"></span>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <input class="form-control btn btn-primary" type="submit" name="submitquestion" id="submitquestion"
+                                       value="Add Question">
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+        <!-- /.content -->
+
+        <!-- Main content -->
+        <section class="content" style="padding: 0 0.5rem;">
+            <form method="post" action="" onsubmit="return confirmvalidation2(e)" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header" style="background: goldenrod;">
+                        <h3 class="card-title" style="color: white;">View Feedback Questions</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="tblquestionviewer" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Number of Questions : {{ fbq_count }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for q in fbq %}
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="edfeedbackquestionid" id="edfeedbackquestionid"
+                                               value="{{ q['feedbackquestionid'] }}">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <b>Question*</b>
+                                                <textarea readonly class="form-control" name="edquestion"
+                                                          id="edquestion">{{ q['question'] }}</textarea>
+                                                <span class="errmsg flash" id="erredquestion"
+                                                      style="color: red;"></span>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        {% if q['question_type'] == "Radio Button" or q['question_type'] == "Check Box" %}
+                                            {% for i in range(1,11,2) %}
+                                                {% set j = i + 1 %}
+                                                <div class="row">
+                                                    {% if q['option' ~ i] != "" %}
+                                                        <div class="col-md-6">
+                                                            <b>Option {{ i }}</b>
+                                                            <textarea readonly class="form-control"
+                                                                      name="edoption{{ i }}"
+                                                                      id="edoption1"
+                                                                      required>{{ q['option' ~ i] }}</textarea>
+                                                            <span class="errmsg flash" id="erredoption1"
+                                                                  style="color: red;"></span>
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if q['option' ~ j] != "" %}
+                                                        <div class="col-md-6">
+                                                            <b>Option {{ j }}</b>
+                                                            <textarea readonly class="form-control"
+                                                                      name="edoption{{ j }}"
+                                                                      id="edoption2">{{ q['option' ~ j] }}</textarea>
+                                                            <span class="errmsg flash" id="erredoption2"
+                                                                  style="color: red;"></span>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+
+                                        {% endif %}
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <b>Question Type*</b>
+                                                <select class="form-control" name="edquestion_type" id="edquestion_type"
+                                                        disabled>
+                                                    <option value=''>Select Answer</option>
+                                                    {% for val in arr %}
+                                                        {% if q.get('question_type') == val %}
+                                                            <option value="{{ val }}" selected>{{ val }}</option>
+                                                        {% else %}
+                                                            <option value="{{ val }}">{{ val }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                                <span class="errmsg flash" id="erredquestion_type"
+                                                      style="color: red;"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <b>Status*</b>
+                                                <select class="form-control" name="edstatus" id="edstatus" disabled>
+                                                    {% set status_array = ["Active","Inactive"] %}
+                                                    {% for val in status_array %}
+                                                        {% if q['status'] == val %}
+                                                            <option value='{{ val }}' selected>{{ val }}</option>
+                                                        {% else %}
+                                                            <option value='{{ val }}'>{{ val }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                                <span class="errmsg flash" id="erredstatus"
+                                                      style="color: red;"></span>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="card-footer">
+                                            <div class="row">
+                                                <div class="col-md-4"></div>
+                                                <div class="col-md-4" style='text-align: right;'>
+                                                    <a class="form-control btn btn-danger" name="img" id="img"
+                                                       style='color: white;'
+                                                       onclick='return validatedel("/admin/feedback/topic/add?feedbackquestionid={{ q['feedbackquestionid'] }}&feedbacktopicid={{ feedback_topic_id }}")'>Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-footer-->
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+    {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#tblquestionviewer').DataTable({
+                "pageLength": 1,
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "bAutoWidth": false
+            });
+        });
+    </script>
+    <script>
+        function confirmvalidation() {
+            let i = 0;
+            $('.errmsg').html('');
+
+            if (document.getElementById("testseries_topic").value === "") {
+                document.getElementById("errtestseries_topic").innerHTML = "Topic should not be empty...";
+                i = 1;
+            }
+
+            if (document.getElementById("categoryid").value === "") {
+                document.getElementById("errcategoryid").innerHTML = "Kindly select the category...";
+                i = 1;
+            }
+            if (document.getElementById("marksperquestion").value === "") {
+                document.getElementById("errmarksperquestion").innerHTML = "Kindly enter the Corrent answer marks";
+                i = 1;
+            }
+            if (document.getElementById("negativemarks").value === "") {
+                document.getElementById("errnegativemarks").innerHTML = "Kindly enter negative mark";
+                i = 1;
+            }
+
+            return i === 0;
+        }
+    </script>
+    <script>
+        const feedback_topic_id = {{ feedback_topic_id }}
+        document.addQuestion.onsubmit = (e) => confirmvalidation1(e)
+
+        async function confirmvalidation1(e) {
+            e.preventDefault()
+            let i = false;
+            let str = ""
+            $('.errmsg').html('');
+            if (document.getElementById("question").value === "") {
+                str += "Error: Question should not be empty...\n";
+                i = true;
+            }
+            if ($('#question_type').val() !== 'Text Box') {
+                if (document.getElementById("option1").value === "") {
+                    str += "Error: Kindly enter Option 1...";
+                    i = 1;
+                }
+                if (document.getElementById("question_type").value !== "Text Box") {
+                    if (document.getElementById("option2").value === "") {
+                        str += "Error: Kindly enter Option 2...";
+                        i = 1;
+                    }
+                }
+            }
+            if (document.getElementById("question_type").value === "") {
+                str += "Error: Kindly select Question Type...";
+                i = true;
+            }
+            if (i) {
+                alert(str)
+                return
+            }
+
+            const questionData = {
+                question_type: document.querySelector('[name="question_type"]').value,
+                question: document.querySelector('[name="question"]').value,
+                option1: document.querySelector('[name="option1"]').value,
+                option2: document.querySelector('[name="option2"]').value,
+                option3: document.querySelector('[name="option3"]').value,
+                option4: document.querySelector('[name="option4"]').value,
+                option5: document.querySelector('[name="option5"]').value,
+                option6: document.querySelector('[name="option6"]').value,
+                option7: document.querySelector('[name="option7"]').value,
+                option8: document.querySelector('[name="option8"]').value,
+                option9: document.querySelector('[name="option9"]').value,
+                option10: document.querySelector('[name="option10"]').value,
+                feedback_topic_id: feedback_topic_id
+            };
+
+            const res = await fetch('{{ url_for('admin_routes.admin_feedback_topic_add_question')}}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(questionData)
+            })
+
+            const data = await res.json()
+            if (data.success) {
+                alert('Question Added')
+            }
+            document.addQuestion.reset()
+            location.reload()
+        }
+    </script>
+    <script>
+        function validatedel(link) {
+            if (confirm("Are you sure want to delete this record?") === true) {
+                location.replace(link)
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+    <script>
+        $('#question_type').change(function () {
+            if ($('#question_type').val() === 'Text Box') {
+                $('#idhidden').hide();
+            } else {
+                $('#idhidden').show();
+            }
+        });
+    </script>
+{% endblock %}

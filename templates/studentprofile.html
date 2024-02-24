@@ -1,0 +1,216 @@
+{% extends "_student_layout.html" %}
+
+{% block content %}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content">
+            <form method="post" action="" onsubmit="return confirmvalidation()" enctype="multipart/form-data">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Student Entry</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-3">Original Name</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="studentname" id="studentname"
+                                       value="{{ rs['studentname'] }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errstudentname"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Roll No.</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="rollno" id="rollno"
+                                       value="{{ rs['rollno'] }}">
+
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errrollno" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Email - id</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="email_id" id="email_id"
+                                       value="{{ rs['email_id'] }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errrollno" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-3">Password</div>
+                            <div class="col-md-5">
+                                <input type="password" class="form-control" name="password" id="password"
+                                       value="{{ rs['password'] }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errpassword"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Confirm Password</div>
+                            <div class="col-md-5">
+                                <input type="password" class="form-control" name="confirmpassword" id="confirmpassword"
+                                       value="{{ rs['password'] }}">
+
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errconfirmpassword"
+                                                        style="color: red;"></span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Date of Birth</div>
+                            <div class="col-md-5">
+                                <input type="date" class="form-control" name="dateofbirth" id="dateofbirth"
+                                       value="{{ rs['dateofbirth'] }}">
+
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errdateofbirth"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Course</div>
+                            <div class="col-md-5">
+                                <select class="form-control" name="course_id" id="course_id">
+                                    <option value='{{ course['course_id'] }}' selected>{{ course['course_title'] }}</option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errcourse_id"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Section</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="section" id="section"
+                                       value="{{ rs['section'] }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errsection" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Student's Contact No.</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="student_no" id="student_no"
+                                       value="{{ rs['student_no'] }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errstudent_no"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Mother's Contact No.</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="mothers_no" id="fathers_no"
+                                       value="{{ rs['mothers_no'] }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errmothers_no"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Fathers's Contact No.</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="fathers_no" id="fathers_no"
+                                       value="{{ rs['fathers_no'] }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="errfathers_no"
+                                                        style="color: red;"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Academic year</div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="academicyear" id="academicyear"
+                                       value="{{ rs['academicyear'] }}">
+                            </div>
+                            <div class="col-md-4"><span class="errmsg flash" id="erracademicyear"
+                                                        style="color: red;"></span></div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5">
+                                <input class="btn btn-primary btn-block" type="submit" name="submit" id="submit"
+                                       value="Submit">
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+            </form>
+        </section>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function confirmvalidation() {
+            var i = 0;
+            $('.errmsg').html('');
+            if (document.getElementById("studentname").value === "") {
+                document.getElementById("errstudentname").innerHTML = "Original Name should not be empty";
+                i = 1;
+            }
+
+            if (document.getElementById("rollno").value === "") {
+                document.getElementById("errrollno").innerHTML = "Email ID should not be empty";
+                i = 1;
+            }
+
+
+            if (document.getElementById("password").value.length < 6) {
+                document.getElementById("errpassword").innerHTML = "Password should contain more than 6 characters";
+                i = 1;
+            }
+            if (document.getElementById("password").value === "") {
+                document.getElementById("errpassword").innerHTML = "Password code should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("confirmpassword").value !== document.getElementById("password").value) {
+                document.getElementById("errconfirmpassword").innerHTML = "Password and Confirm password not matching";
+                i = 1;
+            }
+            if (document.getElementById("confirmpassword").value === "") {
+                document.getElementById("errconfirmpassword").innerHTML = "Confirm Password  should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("section").value === "") {
+                document.getElementById("errsection").innerHTML = "University Name should not be empty";
+                i = 1;
+            }
+            if (document.getElementById("course_id").value === "") {
+                document.getElementById("errcourse_id").innerHTML = "Qualification should not be empty";
+                i = 1;
+            }
+
+            if (i == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+{% endblock %}
